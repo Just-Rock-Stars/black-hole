@@ -1,15 +1,7 @@
 import { FC } from 'react'
+import { ErrorPageProps } from './types'
 
-interface ErrorTypes {
-  code: string
-  title: string
-  message: string
-}
-
-// Пример добавления страницы
-// <ErrorPage code={"500"} title={"Ошибка сервера"} message={"Мы уже исправляем это"}/>
-
-export const ErrorPage: FC<ErrorTypes> = ({ code, title, message }) => {
+const ErrorPage: FC<ErrorPageProps> = ({ code, title, message }) => {
   return (
     <main
       className="grid min-h-full place-items-center bg-white text-base px-6 py-24 sm:py-32 lg:px-8"
@@ -34,3 +26,5 @@ export const ErrorPage: FC<ErrorTypes> = ({ code, title, message }) => {
     </main>
   )
 }
+
+export default ErrorPage
