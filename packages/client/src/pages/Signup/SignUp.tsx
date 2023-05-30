@@ -150,7 +150,7 @@ export const SignUp = () => {
             disabled={isSubmitting}
           />
         </form>
-        <AppLink to={'/login'} title="Войти">
+        <AppLink to="/login" title="Войти">
           Войти
         </AppLink>
       </main>
