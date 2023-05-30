@@ -31,12 +31,12 @@ export const Navbar: FC = () => {
           </Link>
         </li>
         <li>
-          <Link className="text-blue-600" to="/login">
+          <Link className="text-blue-600" to="/sign-in">
             Login
           </Link>
         </li>
         <li>
-          <Link className="text-blue-600" to="/signup">
+          <Link className="text-blue-600" to="/sign-up">
             Sign-up
           </Link>
         </li>

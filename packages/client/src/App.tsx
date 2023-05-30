@@ -14,8 +14,8 @@ const browserRouter = createBrowserRouter([
   { path: '/forum', Component: Forum },
   { path: '/liderboard', Component: Liderboard },
   { path: '/profile', Component: Profile },
-  { path: '/login', Component: LoginPage },
-  { path: '/signup', Component: SignUp },
+  { path: '/sign-in', Component: LoginPage },
+  { path: '/sign-up', Component: SignUp },
 ]);
 
 function App() {

@@ -96,7 +96,7 @@ export const LoginPage = () => {
             disabled={isSubmitting || hasLoggedIn}
           />
         </form>
-        <AppLink to={'/signup'} title="Регистрация">
+        <AppLink to={'/sign-up'} title="Регистрация">
           Регистрация
         </AppLink>
       </main>

@@ -79,7 +79,7 @@ export const SignUp = () => {
   };
 
   if (hasRegistered) {
-    return <Navigate to={'/login'} />;
+    return <Navigate to={'/sign-in'} />;
   }
 
   return (
@@ -150,7 +150,7 @@ export const SignUp = () => {
             disabled={isSubmitting}
           />
         </form>
-        <AppLink to="/login" title="Войти">
+        <AppLink to="/sign-in" title="Войти">
           Войти
         </AppLink>
       </main>
