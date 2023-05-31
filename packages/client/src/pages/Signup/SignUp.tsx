@@ -88,7 +88,7 @@ export const SignUp: FC = () => {
       <main
         className="flex flex-col
   justify-center items-center
-  h-screen w-screen">
+  h-screen w-full">
         <h1 className="text-4xl mb-8">Регистрация</h1>
         <form
           action="submit"
