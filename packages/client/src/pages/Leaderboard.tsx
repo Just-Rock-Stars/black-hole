@@ -1,5 +1,5 @@
-import { FC } from 'react'
-import { Navbar } from '../components/Navbar'
+import { FC } from 'react';
+import { Navbar } from '../components/Navbar';
 
 const people = [
   {
@@ -20,13 +20,13 @@ const people = [
     image:
       'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
   },
-]
+];
 
-export const Liderboard: FC = () => {
+export const Leaderboard: FC = () => {
   return (
     <>
       <Navbar />
-      <h1 className="font-extrabold text-4xl">Liderboard</h1>
+      <h1 className="font-extrabold text-4xl">Leaderboard</h1>
       <ul className="divide-y divide-gray-200">
         {people.map(person => (
           <li key={person.email} className="py-4 flex">
@@ -40,5 +40,5 @@ export const Liderboard: FC = () => {
         ))}
       </ul>
     </>
-  )
-}
+  );
+};
