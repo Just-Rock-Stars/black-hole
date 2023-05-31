@@ -17,7 +17,7 @@ const submit = (dto: SignInDto) => {
   return authApi.SignIn(dto);
 };
 
-export const LoginPage: FC = () => {
+export const SignIn: FC = () => {
   const [hasLoggedIn, setHasLoggedIn] = useState(false);
 
   const {
