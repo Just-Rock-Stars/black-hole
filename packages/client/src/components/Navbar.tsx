@@ -5,7 +5,7 @@ import { Routes } from '../utils/global';
 export const Navbar: FC = () => {
   return (
     <nav>
-      <ul className="flex gap-x-4 border border-black">
+      <ul className="flex xs:flex-col xs:items-center sm:flex-row gap-x-4 border border-black">
         <li>
           <Link className="text-blue-600" to={Routes.INDEX}>
             Home

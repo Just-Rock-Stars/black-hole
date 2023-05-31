@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { Navigate } from 'react-router-dom';
 
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { AuthApi } from '../../api/Auth/Auth';
 import { SignInDto } from '../../api/Auth/types';
 import AppLink from '../../components/AppLink/index';
@@ -17,7 +17,7 @@ const submit = (dto: SignInDto) => {
   return authApi.SignIn(dto);
 };
 
-export const LoginPage = () => {
+export const LoginPage: FC = () => {
   const [hasLoggedIn, setHasLoggedIn] = useState(false);
 
   const {
@@ -65,7 +65,7 @@ export const LoginPage = () => {
         <form
           action="submit"
           noValidate
-          className="flex flex-col items-center justify-center w-1/5 gap-y-2"
+          className="flex flex-col items-center justify-center xs:w-1/2 sm:w-1/2 lg:w-1/3 lg:max-w-464px gap-y-2"
           onSubmit={handleSubmit(onSubmit)}>
           <Input
             className="text-xs p-0.5 text-xs"

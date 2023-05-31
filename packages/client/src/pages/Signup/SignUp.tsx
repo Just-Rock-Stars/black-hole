@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { Navigate } from 'react-router-dom';
 
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { AuthApi } from '../../api/Auth/Auth';
 import { SignUpDto } from '../../api/Auth/types';
 import { AppLink } from '../../components/AppLink/AppLink';
@@ -23,7 +23,7 @@ const submit = (dto: SignUpDto) => {
   return authApi.SignUp(dto);
 };
 
-export const SignUp = () => {
+export const SignUp: FC = () => {
   const [hasRegistered, setHasRegistered] = useState(false);
 
   const {
@@ -93,7 +93,7 @@ export const SignUp = () => {
         <form
           action="submit"
           noValidate
-          className="flex flex-col items-center justify-center w-1/5 gap-y-2"
+          className="flex flex-col items-center justify-center xs:w-1/3 sm:w-1/5 gap-y-2"
           onSubmit={handleSubmit(onSubmit)}>
           <Input
             className="text-xs p-0.5 text-xs"
