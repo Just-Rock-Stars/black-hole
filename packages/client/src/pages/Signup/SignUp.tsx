@@ -93,7 +93,7 @@ export const SignUp: FC = () => {
         <form
           action="submit"
           noValidate
-          className="flex flex-col items-center justify-center xs:w-1/3 sm:w-1/5 gap-y-2"
+          className="flex flex-col items-center justify-center xs:w-1/2 sm:w-1/2 lg:w-1/3 lg:max-w-464px gap-y-2"
           onSubmit={handleSubmit(onSubmit)}>
           <Input
             className="text-xs p-0.5 text-xs"
