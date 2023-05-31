@@ -8,6 +8,6 @@ export enum Routes {
   LEADERBOARD = '/leaderboard',
   FORUM = '/forum',
   PROFILE = '/profile',
-  SIGNUP = 'sign-up',
-  SIGNIN = 'sign-in',
+  SIGNUP = '/sign-up',
+  SIGNIN = '/sign-in',
 }
