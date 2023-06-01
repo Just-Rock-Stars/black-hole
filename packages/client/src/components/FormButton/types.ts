@@ -1,6 +1,6 @@
-import { ButtonProps } from '../Button/types';
+import { ButtonHTMLAttributes } from 'react';
 
-export type FormButtonProps = ButtonProps & {
+export type FormButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   error?: string;
   errorClassName?: string;
   containerClassName?: string;

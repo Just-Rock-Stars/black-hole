@@ -90,11 +90,11 @@ export const SignIn: FC = () => {
               font-medium text-sm
               mt-0
             `}
-            text="Войти"
             error={root?.message}
             type="submit"
-            disabled={isSubmitting || hasLoggedIn}
-          />
+            disabled={isSubmitting || hasLoggedIn}>
+            Войти
+          </FormButton>
         </form>
         <AppLink to={'/sign-up'} title="Регистрация">
           Регистрация

@@ -1,6 +1,5 @@
 import clsx from 'clsx';
 
-import { Button } from '../Button/Button';
 import { FormButtonProps } from './types';
 
 export const FormButton = ({
@@ -23,7 +22,10 @@ export const FormButton = ({
         )}>
         {error}
       </span>
-      <Button {...buttonProps} />
+      <button
+        {...buttonProps}
+        className={clsx(buttonProps.className, `btn-primary`)}
+      />
     </div>
   );
 };
