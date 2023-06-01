@@ -10,7 +10,7 @@ export const FormButton = ({
   ...buttonProps
 }: FormButtonProps) => {
   return (
-    <div className={clsx(containerClassName, '')}>
+    <div className={clsx(containerClassName)}>
       <span
         className={clsx(
           errorClassName,
