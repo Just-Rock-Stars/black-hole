@@ -16,7 +16,6 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     },
     ref
   ) => {
-    const inputError = 'border-red-500';
     return (
       <div
         className={clsx(wrapperClassName, 'flex flex-col items-center w-full')}>
@@ -40,7 +39,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             `bg-gray-50 border text-gray-900
           border-gray-300 text-gray-900 focus:ring-blue-500 rounded-lg
           focus:border-blue-500 block w-full focus-visible:outline-none`,
-            { [inputError]: !!validationError }
+            { 'border-red-500': !!validationError }
           )}
         />
         <span

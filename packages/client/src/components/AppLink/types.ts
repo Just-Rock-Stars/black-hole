@@ -1,3 +1,3 @@
-import { Link } from 'react-router-dom';
+import { LinkProps } from 'react-router-dom';
 
-export type AppLinkProps = Parameters<typeof Link>[0];
+export type AppLinkProps = LinkProps;
