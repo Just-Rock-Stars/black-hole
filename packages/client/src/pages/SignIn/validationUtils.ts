@@ -20,7 +20,7 @@ export const validatePassword = (password: string | null) => {
 };
 
 export const validateLogin = (login: string | null) => {
-  if (login === null || login === '') {
+  if (!login) {
     return 'Поле обязательно для ввода';
   }
 

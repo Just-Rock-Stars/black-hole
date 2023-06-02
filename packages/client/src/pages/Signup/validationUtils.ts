@@ -24,23 +24,21 @@ export const validatePassword = (value: string | null) => {
 };
 
 export const validateLogin = (value: string | null) => {
-  const login = trim(value);
-
-  if (login === null || login === '') {
+  if (!value) {
     return 'Поле обязательно для ввода';
   }
 
-  if (login.length < 4) {
-    return 'Логин должен быть не короче 4 символов';
+  if (value.length < 4) {
+    return 'Имя должно быть не короче 4 символов';
   }
 
-  if (login.length > 20) {
+  if (value.length > 20) {
     return 'Логин должен быть не длиннее 20 символов';
   }
 
   const regEx = new RegExp('^[A-Za-z0-9]*$');
 
-  if (!regEx.test(login)) {
+  if (!regEx.test(value)) {
     return 'Логин может состоять только из цифр и букв латинского алфавита';
   }
 };
