@@ -1,5 +1,5 @@
-import { Dispatch, FC, SetStateAction } from 'react'
-import { TopicListProps } from '../types'
+import { FC, useEffect, useState } from 'react'
+import { TopicListProps, TopicTypes } from '../types'
 
 export const TopicList: FC<TopicListProps> = props => {
   const testTopicList = [
@@ -50,6 +50,12 @@ export const TopicList: FC<TopicListProps> = props => {
     },
   ]
 
+  const [topic, setTopic] = useState<TopicTypes>({ data: [] })
+
+  useEffect(() => {
+    setTopic({ data: testTopicList })
+  }, [])
+
   return (
     <main className="font-mono" style={{ width: 1280, margin: '50px auto' }}>
       <h1 className="w-full py-2 text-3xl text-slate-800 border-y border-black">
@@ -61,22 +67,22 @@ export const TopicList: FC<TopicListProps> = props => {
         <div className="w-4/12 text-center">последняя публикация</div>
       </nav>
 
-      {testTopicList.map(item => {
+      {topic.data.map(topic => {
         return (
           <div
             className="flex py-1 px-1 cursor-pointer odd:bg-slate-200"
             onClick={() => props.setTestRoute({ mode: 'topic' })}
-            key={item.title}>
+            key={topic.title}>
             <div className="w-6/12">
-              <div className="text-lg h-20 mt-1">{item.title}</div>
-              <div className="text-sm">Автор: {item.author}</div>
+              <div className="text-lg h-20 mt-1">{topic.title}</div>
+              <div className="text-sm">Автор: {topic.author}</div>
             </div>
             <div className="w-2/12 flex items-center justify-center text-2xl">
-              {item.answers}
+              {topic.answers}
             </div>
             <div className="w-4/12 flex flex-col items-center justify-center">
-              <div className="">{item.lastPublic.time}</div>
-              <div className="">{item.lastPublic.author}</div>
+              <div className="">{topic.lastPublic.time}</div>
+              <div className="">{topic.lastPublic.author}</div>
             </div>
           </div>
         )

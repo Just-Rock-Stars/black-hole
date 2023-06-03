@@ -1,4 +1,5 @@
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
+import { MessagesTypes } from '../types'
 
 export const Topic: FC = () => {
   const testTopic = [
@@ -35,19 +36,26 @@ export const Topic: FC = () => {
       time: '42 минут назад',
     },
   ]
+
+  const [messages, setMessages] = useState<MessagesTypes>({ data: [] })
+
+  useEffect(() => {
+    setMessages({ data: testTopic })
+  }, [])
+
   return (
     <main className="font-mono" style={{ width: 1280, margin: '50px auto' }}>
       <h1 className="w-full py-2 text-3xl text-slate-800 border-y border-black">
         {testTopic[0].message}
       </h1>
-      {testTopic.map(item => {
+      {messages!.data.map(message => {
         return (
           <div
             className="flex py-10 px-1 cursor-pointer odd:bg-slate-200"
-            key={item.message}>
-            <div className="text-sm w-2/12">{item.author}</div>
-            <div className="w-8/12">{item.message}</div>
-            <div className="w-2/12 text-end">{item.time}</div>
+            key={message.message}>
+            <div className="text-sm w-2/12">{message.author}</div>
+            <div className="w-8/12">{message.message}</div>
+            <div className="w-2/12 text-end">{message.time}</div>
           </div>
         )
       })}
