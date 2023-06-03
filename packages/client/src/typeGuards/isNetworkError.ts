@@ -1,13 +1,7 @@
-import { AxiosError } from 'axios';
+import { AxiosError, isAxiosError } from 'axios';
 
-export function isNetworkError(e: any): e is AxiosError {
-  if (e && e.isAxiosError === true) {
-    const lowercaseMessage = e?.message?.toLowerCase();
-    return (
-      lowercaseMessage?.includes('Network Error'.toLowerCase()) ||
-      e.code === 'ECONNABORTED'
-    );
-  }
-
-  return false;
+export function isNetworkError(e: any): e is AxiosError & {
+  response: { data: { reason: string } };
+} {
+  return e && isAxiosError(e) && e.response?.status && e.response.data.reason;
 }

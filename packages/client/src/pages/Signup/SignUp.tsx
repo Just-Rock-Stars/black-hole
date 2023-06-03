@@ -8,6 +8,7 @@ import { AppLink } from '../../components/AppLink/AppLink';
 import { FormButton } from '../../components/FormButton/FormButton';
 import { Input } from '../../components/Input/Input';
 import { Navbar } from '../../components/Navbar';
+import { isNetworkError } from '../../typeGuards/isNetworkError';
 import { FormValues } from './types';
 import {
   validateEmail,
@@ -67,12 +68,25 @@ export const SignUp: FC = () => {
 
       setHasRegistered;
     } catch (error) {
-      const typedError = error as any;
-      const errorMessage = typedError?.message;
+      let message = 'Что-то пошло не так. Попробуйте перезагрузить страницу';
+      if (isNetworkError(error)) {
+        if (error.response.data.reason === 'User already in system') {
+          message = 'Пользователь уже авторизован';
+        }
 
-      if (typeof errorMessage === 'string') {
-        setError('root', { message: errorMessage, type: 'server' });
+        if (error.response.data.reason === 'Login already exists') {
+          message = 'Пользователь с таким логином уже существует';
+        }
+
+        if (error.response.data.reason === 'Email already exists') {
+          message = 'Пользователь с такой почтой уже существует';
+        }
+
+        if (error.response.status >= 500) {
+          message = 'Повторите попытку позже';
+        }
       }
+      setError('root', { type: 'server', message });
     }
   };
 

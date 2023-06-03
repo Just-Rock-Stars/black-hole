@@ -16,7 +16,6 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     },
     ref
   ) => {
-    console.log(!'   ' && 'bla');
     return (
       <div
         className={clsx(wrapperClassName, 'flex flex-col items-center w-full')}>

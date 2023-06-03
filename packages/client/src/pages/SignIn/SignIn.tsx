@@ -8,6 +8,7 @@ import AppLink from '../../components/AppLink/index';
 import FormButton from '../../components/FormButton';
 import Input from '../../components/Input';
 import { Navbar } from '../../components/Navbar';
+import { isNetworkError } from '../../typeGuards/isNetworkError';
 import { FormValues } from './types';
 import { validateLogin, validatePassword } from './validationUtils';
 
@@ -39,12 +40,26 @@ export const SignIn: FC = () => {
 
       setHasLoggedIn(true);
     } catch (error) {
-      const typedError = error as any;
-      const errorMessage = typedError?.message;
+      let message = 'Что-то пошло не так. Попробуйте перезагрузить страницу';
 
-      if (typeof errorMessage === 'string') {
-        setError('root', { message: errorMessage, type: 'server' });
+      if (isNetworkError(error)) {
+        if (error.response.status === 401) {
+          message = 'Неверный логин или пароль';
+        }
+
+        if (error.response.data.reason === 'User already in system') {
+          message = 'Пользователь уже авторизован';
+        }
+
+        if (error.response.status >= 500) {
+          message = 'Повторите попытку позже';
+        }
       }
+
+      setError('root', {
+        type: 'server',
+        message,
+      });
     }
   };
 
