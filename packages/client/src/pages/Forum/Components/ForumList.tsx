@@ -1,12 +1,5 @@
-import { Dispatch, FC, SetStateAction } from 'react'
-
-interface TestStateTypes {
-  mode: string
-}
-
-interface ForumListProps {
-  setTestRoute: Dispatch<SetStateAction<TestStateTypes>>
-}
+import { FC } from 'react'
+import { ForumListProps } from '../types'
 
 export const ForumList: FC<ForumListProps> = ({ setTestRoute }) => {
   const testList = [
