@@ -22,3 +22,5 @@ export class AuthApi implements IAuth {
     return this.instance.post<SignUpResponse>('/auth/signup', dto);
   }
 }
+
+export const authApi = new AuthApi();

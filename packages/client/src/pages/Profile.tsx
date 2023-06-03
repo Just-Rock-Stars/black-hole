@@ -1,8 +1,7 @@
 import { FC } from 'react';
-import { AuthApi } from '../api/Auth/Auth';
+import { authApi } from '../api/Auth/Auth';
 import { Navbar } from '../components/Navbar';
 
-const authApi = new AuthApi();
 const logout = () => authApi.SignOut();
 
 export const Profile: FC = () => {

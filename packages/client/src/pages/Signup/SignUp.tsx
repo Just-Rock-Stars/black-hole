@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { Navigate } from 'react-router-dom';
 
 import { FC, useState } from 'react';
-import { AuthApi } from '../../api/Auth/Auth';
+import { authApi } from '../../api/Auth/Auth';
 import { SignUpDto } from '../../api/Auth/types';
 import { AppLink } from '../../components/AppLink/AppLink';
 import { FormButton } from '../../components/FormButton/FormButton';
@@ -16,8 +16,6 @@ import {
   validatePassword,
   validatePhone,
 } from './validationUtils';
-
-const authApi = new AuthApi();
 
 const submit = (dto: SignUpDto) => {
   return authApi.SignUp(dto);
