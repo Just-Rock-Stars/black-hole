@@ -11,7 +11,12 @@ export interface ForumListProps {
 }
 
 export interface MessagesTypes {
-  data: { author: string; message: string; time: string }[]
+  data: {
+    author: string
+    message: string
+    time: string
+    id: string
+  }[]
 }
 
 export interface TopicTypes {
@@ -20,6 +25,7 @@ export interface TopicTypes {
     author: string
     answers: number
     lastPublic: { time: string; author: string }
+    id: string
   }[]
 }
 
@@ -29,5 +35,6 @@ export interface ThemeTypes {
     discribe: string
     countOfThemes: number
     countOfAnswers: number
+    id: string
   }[]
 }
