@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useState } from 'react'
 import { TopicListProps, TopicTypes } from '../types'
 
 export const TopicList: FC<TopicListProps> = props => {
@@ -11,6 +11,7 @@ export const TopicList: FC<TopicListProps> = props => {
         time: '4 часа назад',
         author: 'Техническая поддержка',
       },
+      id: '8bxnesczx4',
     },
     {
       title: 'Баг в меню, не работает кнопка играть',
@@ -20,6 +21,7 @@ export const TopicList: FC<TopicListProps> = props => {
         time: '5 часа назад',
         author: 'Техническая поддержка',
       },
+      id: 'ie9q2fkvu8',
     },
     {
       title: 'Как пройти финальный уровень?',
@@ -29,6 +31,7 @@ export const TopicList: FC<TopicListProps> = props => {
         time: '10 часов назад',
         author: 'Пользователь: Falepton',
       },
+      id: 'afwnh0lmjv',
     },
     {
       title: 'Персонаж телепортируется во время игры',
@@ -38,6 +41,7 @@ export const TopicList: FC<TopicListProps> = props => {
         time: '1 день назад',
         author: '',
       },
+      id: 'e7orkus6qo',
     },
     {
       title: 'Люблю вашу игру',
@@ -47,14 +51,11 @@ export const TopicList: FC<TopicListProps> = props => {
         time: '2 дня назад',
         author: 'Техническая поддержка',
       },
+      id: '43so7tojfk',
     },
   ]
 
-  const [topic, setTopic] = useState<TopicTypes>({ data: [] })
-
-  useEffect(() => {
-    setTopic({ data: testTopicList })
-  }, [])
+  const [topic, setTopic] = useState<TopicTypes>({ data: testTopicList })
 
   return (
     <main className="font-mono" style={{ width: 1280, margin: '50px auto' }}>
@@ -67,22 +68,22 @@ export const TopicList: FC<TopicListProps> = props => {
         <div className="w-4/12 text-center">последняя публикация</div>
       </nav>
 
-      {topic.data.map(topic => {
+      {topic.data.map(({ title, answers, author, lastPublic, id }) => {
         return (
           <div
             className="flex py-1 px-1 cursor-pointer odd:bg-slate-200"
             onClick={() => props.setTestRoute({ mode: 'topic' })}
-            key={topic.title}>
+            key={id}>
             <div className="w-6/12">
-              <div className="text-lg h-20 mt-1">{topic.title}</div>
-              <div className="text-sm">Автор: {topic.author}</div>
+              <div className="text-lg h-20 mt-1">{title}</div>
+              <div className="text-sm">Автор: {author}</div>
             </div>
             <div className="w-2/12 flex items-center justify-center text-2xl">
-              {topic.answers}
+              {answers}
             </div>
             <div className="w-4/12 flex flex-col items-center justify-center">
-              <div className="">{topic.lastPublic.time}</div>
-              <div className="">{topic.lastPublic.author}</div>
+              <div className="">{lastPublic.time}</div>
+              <div className="">{lastPublic.author}</div>
             </div>
           </div>
         )
