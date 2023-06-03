@@ -8,15 +8,15 @@ import { AppLink } from '../../components/AppLink/AppLink';
 import { FormButton } from '../../components/FormButton/FormButton';
 import { Input } from '../../components/Input/Input';
 import { Navbar } from '../../components/Navbar';
-import { isNetworkError } from '../../typeGuards/isNetworkError';
-import { FormValues } from './types';
 import {
   validateEmail,
   validateLogin,
   validateNames,
   validatePassword,
   validatePhone,
-} from './validationUtils';
+} from '../../helpers/authFormValidation';
+import { isNetworkError } from '../../typeGuards/isNetworkError';
+import { FormValues } from './types';
 
 const submit = (dto: SignUpDto) => {
   return authApi.SignUp(dto);

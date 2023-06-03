@@ -1,4 +1,4 @@
-import { trim } from '../../utils/validation';
+import { trim } from './validationHelpers';
 
 export const validatePassword = (value: string | null) => {
   const password = trim(value);

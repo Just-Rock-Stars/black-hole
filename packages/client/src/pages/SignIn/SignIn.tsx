@@ -8,9 +8,12 @@ import AppLink from '../../components/AppLink/index';
 import FormButton from '../../components/FormButton';
 import Input from '../../components/Input';
 import { Navbar } from '../../components/Navbar';
+import {
+  validateLogin,
+  validatePassword,
+} from '../../helpers/authFormValidation';
 import { isNetworkError } from '../../typeGuards/isNetworkError';
 import { FormValues } from './types';
-import { validateLogin, validatePassword } from './validationUtils';
 
 const submit = (dto: SignInDto) => {
   return authApi.SignIn(dto);
