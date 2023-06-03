@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { GAME_NAME, Routes } from '../../utils/global'
+import { Routes } from '../../utils/global'
 import { Link } from 'react-router-dom'
 
 const GameEnd: FC = () => {
