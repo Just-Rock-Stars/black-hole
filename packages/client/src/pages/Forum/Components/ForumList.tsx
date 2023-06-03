@@ -1,5 +1,5 @@
-import { FC } from 'react'
-import { ForumListProps } from '../types'
+import { FC, useEffect, useState } from 'react'
+import { ForumListProps, ThemeTypes } from '../types'
 
 export const ForumList: FC<ForumListProps> = ({ setTestRoute }) => {
   const testList = [
@@ -25,6 +25,12 @@ export const ForumList: FC<ForumListProps> = ({ setTestRoute }) => {
     },
   ]
 
+  const [theme, setTheme] = useState<ThemeTypes>({ data: [] })
+
+  useEffect(() => {
+    setTheme({ data: testList })
+  }, [])
+
   return (
     <main className="font-mono" style={{ width: 1280, margin: '50px auto' }}>
       <div className="w-full h-11 text-3xl text-state-800">
@@ -39,21 +45,21 @@ export const ForumList: FC<ForumListProps> = ({ setTestRoute }) => {
         </div>
 
         <div>
-          {testList.map((item, index) => {
+          {theme.data.map((theme, themeIndex) => {
             return (
               <div
                 className="py-2.5 border-black border-y flex hover:bg-slate-100 cursor-pointer"
                 onClick={() => setTestRoute({ mode: 'theme' })}
-                key={index}>
+                key={themeIndex}>
                 <div className="w-10/12">
-                  <div className="text-indigo-600 text-2xl">{item.title}</div>
-                  <div className="forum-item-discribe">{item.discribe}</div>
+                  <div className="text-indigo-600 text-2xl">{theme.title}</div>
+                  <div className="forum-item-discribe">{theme.discribe}</div>
                 </div>
                 <div className="w-1/12 flex justify-center items-center font-bold">
-                  {item.countOfThemes}
+                  {theme.countOfThemes}
                 </div>
                 <div className="w-1/12 flex justify-center items-center font-bold">
-                  {item.countOfAnswers}
+                  {theme.countOfAnswers}
                 </div>
               </div>
             )

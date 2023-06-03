@@ -1,12 +1,9 @@
-// Core
 import { FC } from 'react'
 import { Navbar } from '../../components/Navbar'
-// Components
 import { useState } from 'react'
-import { ForumList } from './Components/ForumList'
-import { TopicList } from './Components/TopicList'
-import { Topic } from './Components/Topic'
-// Types
+import { ForumList } from './components/ForumList'
+import { TopicList } from './components/TopicList'
+import { Topic } from './components/Topic'
 import { TestStateTypes } from './types'
 
 const Forum: FC = () => {
