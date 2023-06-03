@@ -1,12 +1,5 @@
 import { Dispatch, FC, SetStateAction } from 'react'
-
-interface TestStateTypes {
-  mode: string
-}
-
-interface TopicListProps {
-  setTestRoute: Dispatch<SetStateAction<TestStateTypes>>
-}
+import { TopicListProps } from '../types'
 
 export const TopicList: FC<TopicListProps> = props => {
   const testTopicList = [
@@ -72,7 +65,8 @@ export const TopicList: FC<TopicListProps> = props => {
         return (
           <div
             className="flex py-1 px-1 cursor-pointer odd:bg-slate-200"
-            onClick={() => props.setTestRoute({ mode: 'topic' })}>
+            onClick={() => props.setTestRoute({ mode: 'topic' })}
+            key={item.title}>
             <div className="w-6/12">
               <div className="text-lg h-20 mt-1">{item.title}</div>
               <div className="text-sm">Автор: {item.author}</div>

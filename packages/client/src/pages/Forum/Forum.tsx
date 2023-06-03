@@ -6,12 +6,10 @@ import { useState } from 'react'
 import { ForumList } from './Components/ForumList'
 import { TopicList } from './Components/TopicList'
 import { Topic } from './Components/Topic'
+// Types
+import { TestStateTypes } from './types'
 
-export const Forum: FC = () => {
-  interface TestStateTypes {
-    mode: string
-  }
-
+const Forum: FC = () => {
   const [testRoute, setTestRoute] = useState<TestStateTypes>({ mode: 'main' })
 
   return (
@@ -23,3 +21,5 @@ export const Forum: FC = () => {
     </>
   )
 }
+
+export default Forum

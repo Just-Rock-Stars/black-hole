@@ -42,7 +42,9 @@ export const Topic: FC = () => {
       </h1>
       {testTopic.map(item => {
         return (
-          <div className="flex py-10 px-1 cursor-pointer odd:bg-slate-200">
+          <div
+            className="flex py-10 px-1 cursor-pointer odd:bg-slate-200"
+            key={item.message}>
             <div className="text-sm w-2/12">{item.author}</div>
             <div className="w-8/12">{item.message}</div>
             <div className="w-2/12 text-end">{item.time}</div>
