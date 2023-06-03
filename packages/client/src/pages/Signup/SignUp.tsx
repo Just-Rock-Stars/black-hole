@@ -3,7 +3,6 @@ import { Navigate } from 'react-router-dom';
 
 import { FC, useState } from 'react';
 import { authApi } from '../../api/Auth/Auth';
-import { SignUpDto } from '../../api/Auth/types';
 import { AppLink } from '../../components/AppLink/AppLink';
 import { FormButton } from '../../components/FormButton/FormButton';
 import { Input } from '../../components/Input/Input';
@@ -17,10 +16,6 @@ import {
 } from '../../helpers/authFormValidation';
 import { isNetworkError } from '../../typeGuards/isNetworkError';
 import { FormValues } from './types';
-
-const submit = (dto: SignUpDto) => {
-  return authApi.SignUp(dto);
-};
 
 export const SignUp: FC = () => {
   const [hasRegistered, setHasRegistered] = useState(false);
@@ -55,7 +50,7 @@ export const SignUp: FC = () => {
     phone,
   }: FormValues) => {
     try {
-      await submit({
+      await authApi.SignUp({
         first_name: firstName,
         second_name: secondName,
         login,

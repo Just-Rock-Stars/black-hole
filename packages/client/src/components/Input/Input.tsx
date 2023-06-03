@@ -19,7 +19,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div
         className={clsx(wrapperClassName, 'flex flex-col items-center w-full')}>
-        {label !== undefined && (
+        {!!label && (
           <label
             htmlFor={inputProps.id}
             className={clsx(

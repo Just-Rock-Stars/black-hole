@@ -3,7 +3,6 @@ import { Navigate } from 'react-router-dom';
 
 import { FC, useState } from 'react';
 import { authApi } from '../../api/Auth/Auth';
-import { SignInDto } from '../../api/Auth/types';
 import AppLink from '../../components/AppLink/index';
 import FormButton from '../../components/FormButton';
 import Input from '../../components/Input';
@@ -14,10 +13,6 @@ import {
 } from '../../helpers/authFormValidation';
 import { isNetworkError } from '../../typeGuards/isNetworkError';
 import { FormValues } from './types';
-
-const submit = (dto: SignInDto) => {
-  return authApi.SignIn(dto);
-};
 
 export const SignIn: FC = () => {
   const [hasLoggedIn, setHasLoggedIn] = useState(false);
@@ -37,7 +32,7 @@ export const SignIn: FC = () => {
 
   const onSubmit = async (data: FormValues) => {
     try {
-      await submit(data);
+      await authApi.SignIn(data);
 
       reset();
 
