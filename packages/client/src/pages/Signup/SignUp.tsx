@@ -61,9 +61,10 @@ export const SignUp: FC = () => {
 
       reset();
 
-      setHasRegistered;
+      setHasRegistered(true);
     } catch (error) {
       let message = 'Что-то пошло не так. Попробуйте перезагрузить страницу';
+
       if (isNetworkError(error)) {
         if (error.response.data.reason === 'User already in system') {
           message = 'Пользователь уже авторизован';
@@ -81,6 +82,7 @@ export const SignUp: FC = () => {
           message = 'Повторите попытку позже';
         }
       }
+
       setError('root', { type: 'server', message });
     }
   };

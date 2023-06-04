@@ -16,7 +16,7 @@ export const validatePassword = (value: string | null) => {
   }
 
   const regEx =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,40}$/;
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/;
 
   if (!regEx.test(password)) {
     return 'Пароль должен состоять из букв латинского алфавита, содержать минимум одну большую и маленькую букву, один спец символ';
@@ -36,7 +36,7 @@ export const validateLogin = (value: string | null) => {
     return 'Логин должен быть не длиннее 20 символов';
   }
 
-  const regEx = new RegExp('^[A-Za-z0-9]*$');
+  const regEx = /^[A-Za-z0-9]*$/;
 
   if (!regEx.test(value)) {
     return 'Логин может состоять только из цифр и букв латинского алфавита';
@@ -68,11 +68,11 @@ export const validateEmail = (value: string | null) => {
     return 'Поле обязательно для ввода';
   }
 
-  if (email.length > 40) {
-    return 'Email должен быть не длиннее 40 символов';
+  if (email.length > 254) {
+    return 'Email должен быть не длиннее 254 символов';
   }
 
-  const regEx = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
+  const regEx = /^[\w-.]+@([\w-]+\.)+[\w-]/;
 
   if (!regEx.test(email)) {
     return 'Некорректный адрес почты';
@@ -87,14 +87,14 @@ export const validatePhone = (value: string | null) => {
   }
 
   if (phone.length < 10) {
-    return 'Телефон должен быть не короч 10 символов';
+    return 'Телефон должен быть не короче 10 символов';
   }
 
   if (phone.length > 15) {
     return 'Телефон должен быть не длиннее 15 символов';
   }
 
-  const regEx = /^\+?[0-9]{10,15}$/;
+  const regEx = /^\+?[0-9]*$/;
 
   if (!regEx.test(phone)) {
     return 'Телефон должен состоять из цифр, может начинается с плюса';
