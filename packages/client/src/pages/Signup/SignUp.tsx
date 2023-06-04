@@ -15,6 +15,7 @@ import {
   validatePhone,
 } from '../../helpers/authFormValidation';
 import { isNetworkError } from '../../typeGuards/isNetworkError';
+import { Routes } from '../../utils/global';
 import { FormValues } from './types';
 
 export const SignUp: FC = () => {
@@ -88,7 +89,7 @@ export const SignUp: FC = () => {
   };
 
   if (hasRegistered) {
-    return <Navigate to={'/sign-in'} />;
+    return <Navigate to={Routes.SIGNIN} />;
   }
 
   return (

@@ -12,6 +12,7 @@ import {
   validatePassword,
 } from '../../helpers/authFormValidation';
 import { isNetworkError } from '../../typeGuards/isNetworkError';
+import { Routes } from '../../utils/global';
 import { FormValues } from './types';
 
 export const SignIn: FC = () => {
@@ -62,7 +63,7 @@ export const SignIn: FC = () => {
   };
 
   if (hasLoggedIn) {
-    return <Navigate to={'/profile'} />;
+    return <Navigate to={Routes.PROFILE} />;
   }
 
   return (
