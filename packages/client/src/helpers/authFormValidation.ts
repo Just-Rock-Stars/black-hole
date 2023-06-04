@@ -3,7 +3,7 @@ import { trim } from './validationHelpers';
 export const validatePassword = (value: string | null) => {
   const password = trim(value);
 
-  if (password === null || password === '') {
+  if (!password) {
     return 'Поле обязательно для ввода';
   }
 
