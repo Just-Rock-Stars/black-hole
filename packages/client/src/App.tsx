@@ -1,13 +1,13 @@
-import './App.css'
-import { Leaderboard } from './pages/Leaderboard'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import { Home } from './pages/Home'
+import './App.css'
 import { Forum } from './pages/Forum'
-import { Profile } from './pages/Profile'
 import { Game } from './pages/Game'
-import { GameStart } from './pages/GameStart'
-import { Routes } from './utils/global'
 import { GameEnd } from './pages/GameEnd'
+import { GameStart } from './pages/GameStart'
+import { Home } from './pages/Home'
+import { Leaderboard } from './pages/Leaderboard/Leaderboard'
+import { Profile } from './pages/Profile'
+import { Routes } from './utils/global'
 
 const browserRouter = createBrowserRouter([
   { path: Routes.INDEX, Component: Home },

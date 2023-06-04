@@ -1,5 +1,8 @@
 import { FC } from 'react'
-import { Navbar } from '../components/Navbar'
+
+import { Navbar } from '../../components/Navbar'
+
+import './LeaderBoard.css'
 
 const people = [
   {
@@ -32,17 +35,19 @@ export const Leaderboard: FC = () => {
       <h1 className="font-extrabold text-4xl">Leaderboard</h1>
       <ul className="divide-y divide-gray-200">
         {people.map((person, i) => (
-          <li
-            key={person.email}
-            className="py-4 px-5 w-full grid grid-cols-[min-content_40px_30%_1fr_1fr] items-center gap-x-5">
+          <li key={person.email} className="leader-board-item">
             <p>{i + 1}.&nbsp;</p>
             <img className="h-10 w-10 rounded-full" src={person.image} alt="" />
             <div>
-              <p className="text-sm font-medium text-gray-900">{person.name}</p>
+              <p className="text-sm mx-auto sm:m-0 w-fit font-medium text-gray-900">
+                {person.name}
+              </p>
               <p className="text-sm text-gray-500">{person.email}</p>
             </div>
             <p className="mx-auto">Очки: {person.score}</p>
-            <button className="w-full ml-auto btn-primary">Like</button>
+            <button className="w-1/2 sm:w-full sm:ml-auto btn-primary">
+              Like
+            </button>
           </li>
         ))}
       </ul>
