@@ -1,6 +1,6 @@
-import { FC } from 'react'
-import { GAME_NAME, Routes } from '../../utils/global'
-import { Link } from 'react-router-dom'
+import { FC } from 'react';
+import { GAME_NAME, Routes } from '../../utils/global';
+import { Link } from 'react-router-dom';
 
 const GameStart: FC = () => {
   return (
@@ -42,7 +42,7 @@ const GameStart: FC = () => {
         Поглотить Вселенную ✨
       </Link>
     </section>
-  )
-}
+  );
+};
 
-export default GameStart
+export default GameStart;

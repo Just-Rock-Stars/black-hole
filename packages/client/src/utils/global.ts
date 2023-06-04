@@ -1,4 +1,4 @@
-export const GAME_NAME = 'Black Hole ✨'
+export const GAME_NAME = 'Black Hole ✨';
 
 export enum Routes {
   INDEX = '/',
@@ -8,4 +8,6 @@ export enum Routes {
   LEADERBOARD = '/leaderboard',
   FORUM = '/forum',
   PROFILE = '/profile',
+  SIGNUP = '/sign-up',
+  SIGNIN = '/sign-in',
 }

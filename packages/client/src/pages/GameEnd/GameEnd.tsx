@@ -1,6 +1,6 @@
-import { FC } from 'react'
-import { GAME_NAME, Routes } from '../../utils/global'
-import { Link } from 'react-router-dom'
+import { FC } from 'react';
+import { GAME_NAME, Routes } from '../../utils/global';
+import { Link } from 'react-router-dom';
 
 const GameEnd: FC = () => {
   return (
@@ -56,7 +56,7 @@ const GameEnd: FC = () => {
         </Link>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default GameEnd
+export default GameEnd;

@@ -1,1 +1,1 @@
-export { default as GameEnd } from './GameEnd'
+export { default as GameEnd } from './GameEnd';
