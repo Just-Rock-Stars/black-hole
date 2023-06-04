@@ -1,5 +1,5 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import './App.css'
+
 import { Forum } from './pages/Forum'
 import { Game } from './pages/Game'
 import { GameEnd } from './pages/GameEnd'
@@ -8,6 +8,8 @@ import { Home } from './pages/Home'
 import { Leaderboard } from './pages/Leaderboard/Leaderboard'
 import { Profile } from './pages/Profile'
 import { Routes } from './utils/global'
+
+import './App.css'
 
 const browserRouter = createBrowserRouter([
   { path: Routes.INDEX, Component: Home },
