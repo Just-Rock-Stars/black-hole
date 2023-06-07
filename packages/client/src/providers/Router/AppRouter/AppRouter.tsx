@@ -3,7 +3,9 @@ import { Route, Routes } from 'react-router-dom';
 import { RequireAuth } from './RequireAuth';
 import { Home } from '../../../pages/Home';
 import { Game } from '../../../pages/Game';
-import { Forum } from '../../../pages/Forum';
+import { ForumList } from '../../../pages/Forum/ForumList';
+import { TopicList } from '../../../pages/Forum/TopicList';
+import { Topic } from '../../../pages/Forum/Topic';
 import { Leaderboard } from '../../../pages/Leaderboard';
 import { SignIn } from '../../../pages/SignIn/SignIn';
 import { SignUp } from '../../../pages/Signup/SignUp';
@@ -37,7 +39,17 @@ const routeConfig: Record<AppRoutes, AppRouteProps> = {
   },
   [AppRoutes.FORUM]: {
     path: RoutePaths.FORUM,
-    element: <Forum />,
+    element: <ForumList />,
+    authOnly: true,
+  },
+  [AppRoutes.TOPIC_LIST]: {
+    path: RoutePaths.TOPIC_LIST,
+    element: <TopicList />,
+    authOnly: true,
+  },
+  [AppRoutes.TOPIC]: {
+    path: RoutePaths.TOPIC,
+    element: <Topic />,
     authOnly: true,
   },
   [AppRoutes.LEADERBOARD]: {
