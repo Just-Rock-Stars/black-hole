@@ -59,7 +59,7 @@ export const TopicList: FC = () => {
   ];
 
   const [topic, setTopic] = useState<TopicTypes>({ data: testTopicList });
-  const [isNewTopicOpen, setIsNewTopicOpen] = useState(true);
+  const [isNewTopicOpen, setIsNewTopicOpen] = useState(false);
 
   return (
     <>
