@@ -1,11 +1,11 @@
-import { FC } from 'react'
-import { Navbar } from '../components/Navbar'
+import { FC } from 'react';
+import { Header } from '../components/Header';
 
 export const Game: FC = () => {
   return (
     <>
-      <Navbar />
+      <Header />
       <h1 className="text-4xl font-bold">Game, canvas, etc</h1>
     </>
-  )
-}
+  );
+};

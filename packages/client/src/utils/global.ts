@@ -1,13 +1,3 @@
 export const GAME_NAME = 'Black Hole ✨';
-
-export enum Routes {
-  INDEX = '/',
-  GAME = '/game',
-  GAME_START = '/game-start',
-  GAME_END = '/game-end',
-  LEADERBOARD = '/leaderboard',
-  FORUM = '/forum',
-  PROFILE = '/profile',
-  SIGNUP = '/sign-up',
-  SIGNIN = '/sign-in',
-}
+// Этот http api возвращает рандомный аватар. Можно использовать, как постоянный аватар профиля или как заглушу аватарки пользователя, который не загрузил ничего
+export const RANDOM_AVATAR_PATH = `https://api.dicebear.com/6.x/adventurer-neutral/svg?seed=${Math.random()}&radius=20`;

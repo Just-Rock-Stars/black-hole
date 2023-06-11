@@ -10,6 +10,10 @@ export class AuthApi implements IAuth {
     this.instance = ctorInstance ?? defaultInstance;
   }
 
+  GetUserInfo() {
+    return this.instance.get('/auth/user');
+  }
+
   SignIn(dto: SignInDto) {
     return this.instance.post<Record<string, never>>('/auth/signin', dto);
   }

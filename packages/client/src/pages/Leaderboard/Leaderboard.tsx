@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { Navbar } from '../../components/Navbar';
+import { Header } from '../../components/Header';
 
 import './LeaderBoard.css';
 
@@ -31,7 +31,7 @@ const people = [
 export const Leaderboard: FC = () => {
   return (
     <>
-      <Navbar />
+      <Header />
       <h1 className="font-extrabold text-4xl">Leaderboard</h1>
       <ul className="divide-y divide-gray-200">
         {people.map((person, i) => (

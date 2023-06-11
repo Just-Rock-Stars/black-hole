@@ -6,7 +6,6 @@ import { authApi } from '../../api/Auth/Auth';
 import { AppLink } from '../../components/AppLink/AppLink';
 import { FormButton } from '../../components/FormButton/FormButton';
 import { Input } from '../../components/Input/Input';
-import { Navbar } from '../../components/Navbar';
 import {
   validateEmail,
   validateLogin,
@@ -15,8 +14,9 @@ import {
   validatePhone,
 } from '../../helpers/authFormValidation';
 import { isNetworkError } from '../../typeGuards/isNetworkError';
-import { Routes } from '../../utils/global';
+import { RoutePaths } from '../../providers/Router/AppRouter/constants';
 import { FormValues } from './types';
+import { Header } from '../../components/Header';
 
 export const SignUp: FC = () => {
   const [hasRegistered, setHasRegistered] = useState(false);
@@ -89,12 +89,12 @@ export const SignUp: FC = () => {
   };
 
   if (hasRegistered) {
-    return <Navigate to={Routes.SIGNIN} />;
+    return <Navigate to={RoutePaths.SIGN_IN} />;
   }
 
   return (
     <>
-      <Navbar />
+      <Header />
       <main
         className="flex flex-col
   justify-center items-center

@@ -1,47 +1,50 @@
 import { FC } from 'react';
-import { GAME_NAME, Routes } from '../../utils/global';
+import { GAME_NAME } from '../../utils/global';
 import { Link } from 'react-router-dom';
+import { Header } from '../../components/Header';
+import { RoutePaths } from '../../providers/Router/AppRouter/constants';
 
 const GameStart: FC = () => {
   return (
-    <section className="container m-auto px-4 lg:px-10 flex flex-col items-center">
-      <h1 className="font-black m-0 text-center text-4xl my-6">{GAME_NAME}</h1>
-      <p className="text-base my-2 text-zinc-900">
-        Подарите себе незабываемую прогулку по неизведанным просторам Вселенной
-        в нашей новой игре <span className="font-bold">{GAME_NAME}</span>. Это
-        та самая игра, где вы не просто обычный путешественник - вы могучая
-        черная дыра с космическим аппетитом!
-      </p>
-      <p className="text-base my-2 text-zinc-900">
-        Ваша цель, казалось бы, проста - расти и развиваться, поглощая все на
-        своем пути. Начиная с звездных крошек типа астероидов и комет, вы будете
-        постепенно набирать вес и мощь. Ну и, конечно, становиться всё более
-        угрожающими для окружающего космического мусора.
-      </p>
-      <p className="text-base my-2 text-zinc-900">
-        Но внимание, не все во Вселенной готовы вас полюбить! Более крупные
-        объекты, такие как планеты и звезды, могут нанести вам урон. Поэтому
-        избегайте их, пока не станете достаточно большими, чтобы поглотить даже
-        их. Сейчас они вас отшвыривают, а завтра вы их... поглотите!
-      </p>
-      <p className="text-base my-2 text-zinc-900">
-        <span className="font-bold">{GAME_NAME}</span> предлагает уникальный
-        геймплей, в котором вы не только упражняетесь в стратегическом выборе
-        закуски, но и активно избегаете космических боссов, пока не наберете
-        достаточно мощности.
-      </p>
-      <p className="text-base my-2 text-zinc-900">
-        Приготовьтесь к захватывающему космическому путешествию. Нажмите кнопку
-        <span className="italic"> "Поглотить Вселенную" </span> и поддайтесь
-        своему космическому аппетиту.
-      </p>
-      <p className="text-xl font-bold my-2 text-zinc-900 text-center">
-        Вселенная, приготовься - пришло время стать космическим пожирателем!
-      </p>
-      <Link to={Routes.GAME} className="btn-primary my-6">
-        Поглотить Вселенную ✨
-      </Link>
-    </section>
+    <>
+      <Header />
+      <section className="page-container flex flex-col justify-center items-center md:items-start">
+        <h1 className="font-black m-0 text-center text-4xl my-6 w-full">
+          Подготовьтесь к космическому путешествию в {GAME_NAME}
+        </h1>
+        <h2 className="font-black text-2xl my-6 w-full">Управление:</h2>
+        <ul className="list-disc pl-5">
+          <li>
+            <span className="font-bold">Десктоп:</span> используйте
+            клавиши-стрелки на клавиатуре для передвижения вашей черной дыры по
+            просторам космоса.
+          </li>
+          <li>
+            <span className="font-bold">Мобильные устройства:</span> просто
+            свайпайте в нужном направлении для перемещения черной дыры.
+          </li>
+        </ul>
+        <h2 className="font-black text-2xl my-6 w-full">Механика игры:</h2>
+        <p className="text-base my-2 text-zinc-900">
+          Ваша черная дыра начинает свое путешествие будучи небольшим объектом,
+          но она может поглощать другие объекты для увеличения своего веса и
+          мощи. Каждый объект в игре, включая вашу черную дыру, имеет свой вес.
+        </p>
+        <p className="text-base my-2 text-zinc-900">
+          Схватка с объектом заканчивается одним из двух способов: если ваша
+          черная дыра тяжелее, она поглотит объект и увеличит свой вес. Если же
+          объект тяжелее вашей черной дыры, она получит урон. Ваша задача -
+          стать настолько большой и мощной, чтобы суметь поглотить абсолютно
+          все.
+        </p>
+        <p className="text-xl font-bold my-2 text-zinc-900 text-center">
+          Начните свою миссию по поглощению вселенной!
+        </p>
+        <Link to={RoutePaths.GAME} className="btn-primary my-6">
+          Поглотить Вселенную ✨
+        </Link>
+      </section>
+    </>
   );
 };
 
