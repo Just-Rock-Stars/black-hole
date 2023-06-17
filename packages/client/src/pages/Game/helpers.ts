@@ -1,35 +1,41 @@
 import { CANVAS_HEIGHT, CANVAS_WIDTH, Color, GAME_ENTITY_FONT, MOVE_STEP } from './constants';
+import { moveEnemiesX } from './enemiesHandlers';
 import { gameState } from './gameState';
+import { moveHoleX, moveHoleY } from './holeHandlers';
 import { TDraw } from './types';
 
 const draw: TDraw = {
-  space: (canvasContext) => {
-    canvasContext.fillStyle = 'gray';
-    canvasContext.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+  space: (ctx) => {
+    if (ctx.fillStyle !== 'gray') {
+      ctx.fillStyle = 'gray';
+      ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    }
   },
-  enemies: (canvasContext) => {
+  enemies: (ctx) => {
     gameState.enemies.forEach((enemy) => {
-      canvasContext.fillStyle = Color.ENEMY_ASTEROID_BODY;
-      canvasContext.beginPath();
-      canvasContext.arc(enemy.x, enemy.y, enemy.points, 0, 2 * Math.PI);
-      canvasContext.fill();
+      if (enemy.isVisible) {
+        ctx.fillStyle = Color.ENEMY_ASTEROID_BODY;
+        ctx.beginPath();
+        ctx.arc(enemy.x, enemy.y, enemy.points, 0, 2 * Math.PI);
+        ctx.fill();
 
-      canvasContext.font = GAME_ENTITY_FONT;
-      canvasContext.fillStyle = Color.ENEMY_POINTS_TEXT;
-      canvasContext.fillText(enemy.points.toString(), enemy.x, enemy.y);
+        ctx.font = GAME_ENTITY_FONT;
+        ctx.fillStyle = Color.ENEMY_POINTS_TEXT;
+        ctx.fillText(enemy.points.toString(), enemy.x, enemy.y);
+      }
     });
   },
-  hole: (canvasContext) => {
+  hole: (ctx) => {
     const { hole } = gameState;
 
-    canvasContext.fillStyle = Color.HERO_BODY;
-    canvasContext.beginPath();
-    canvasContext.arc(hole.x, hole.y, hole.points, 0, 2 * Math.PI);
-    canvasContext.fill();
+    ctx.fillStyle = Color.HERO_BODY;
+    ctx.beginPath();
+    ctx.arc(hole.x, hole.y, hole.points, 0, 2 * Math.PI);
+    ctx.fill();
 
-    canvasContext.font = GAME_ENTITY_FONT;
-    canvasContext.fillStyle = Color.HERO_POINTS_TEXT;
-    canvasContext.fillText(hole.points.toString(), hole.x, hole.y);
+    ctx.font = GAME_ENTITY_FONT;
+    ctx.fillStyle = Color.HERO_POINTS_TEXT;
+    ctx.fillText(hole.points.toString(), hole.x, hole.y);
   },
 };
 
@@ -58,7 +64,7 @@ const swallowEnemiesNearby = () => {
     }
   });
 
-  gameState.enemies = enemies.filter((enemy, enemyIndex) => {
+  gameState.enemies = enemies.filter((_enemy, enemyIndex) => {
     return !enemiesIndicesToSwallow.includes(enemyIndex);
   });
 };
@@ -73,16 +79,18 @@ export const requestAnimation = (canvasContext: CanvasRenderingContext2D) => {
 export const handleKeyDown = (event: KeyboardEvent) => {
   switch (event.key) {
     case 'ArrowUp':
-      gameState.hole.y -= MOVE_STEP;
+      moveHoleY(-MOVE_STEP);
       break;
     case 'ArrowDown':
-      gameState.hole.y += MOVE_STEP;
+      moveHoleY(MOVE_STEP);
       break;
     case 'ArrowLeft':
-      gameState.hole.x -= MOVE_STEP;
+      moveEnemiesX(MOVE_STEP);
+      moveHoleX(-MOVE_STEP);
       break;
     case 'ArrowRight':
-      gameState.hole.x += MOVE_STEP;
+      moveEnemiesX(-MOVE_STEP);
+      moveHoleX(MOVE_STEP);
       break;
     default:
       break;

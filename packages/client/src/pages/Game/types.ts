@@ -4,13 +4,20 @@ export type TDraw = {
   hole: (canvasContext: CanvasRenderingContext2D) => void;
 };
 
-type TGameEntity = {
+export type TGameEntity = {
   points: number;
   x: number;
   y: number;
 };
 
+type TEnemyProperties = {
+  isVisible: boolean;
+};
+
+export type TEnemy = TGameEntity & TEnemyProperties;
+
 export type TGameState = {
+  currentScreen: number;
   hole: TGameEntity;
-  enemies: TGameEntity[];
+  enemies: TEnemy[];
 };
