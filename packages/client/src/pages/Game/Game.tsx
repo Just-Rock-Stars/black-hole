@@ -1,7 +1,12 @@
 import { FC, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { gameStatsSlice } from '@store/slices/gameStats/gameStatsSlice';
+import { TSetGameStatsPayload } from '@store/slices/gameStats/types';
+
 import { Header } from '@components/Header';
+
+import { useAppDispatch } from '@utils/useAppDispatch';
 
 import { RoutePaths } from '@src/providers/Router/AppRouter/constants';
 
@@ -13,6 +18,7 @@ import { TOnGameEnd } from './types';
 export const Game: FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -27,8 +33,17 @@ export const Game: FC = () => {
   useEffect(() => {
     const gameStartTimestamp = Date.now();
     const listener = (e: KeyboardEvent) => {
-      const onGameEnd = (results: TOnGameEnd) => {
-        const playTime = results.gameEndTimeStamp - gameStartTimestamp;
+      const onGameEnd = ({ consumedEnemies, gameEndTimeStamp, maxSize, points }: TOnGameEnd) => {
+        const playTime = gameEndTimeStamp - gameStartTimestamp;
+        const gameStatistics: TSetGameStatsPayload = {
+          consumedEnemies: consumedEnemies,
+          maxSize: maxSize,
+          points: points,
+          playTime: playTime,
+        };
+
+        dispatch(gameStatsSlice.actions.setGameStats(gameStatistics));
+
         navigate(RoutePaths.GAME_END);
       };
       handleKeyDown(e, onGameEnd);
