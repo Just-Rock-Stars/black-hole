@@ -1,11 +1,11 @@
-import { CANVAS_HEIGHT, CANVAS_WIDTH } from './constants';
+import { CANVAS_HEIGHT, CANVAS_WIDTH, HOLE_RADIUS } from './constants';
 import { gameState } from './gameState';
 
 export function moveHoleX(step: number) {
   const hole = gameState.hole;
 
-  const isHoleGoingBeyondScreenStart = hole.x <= hole.points && step < 0;
-  const isHoleGoingBeyondScreenEnd = hole.x >= CANVAS_WIDTH - hole.points * 2 && step > 0;
+  const isHoleGoingBeyondScreenStart = hole.x <= HOLE_RADIUS && step < 0;
+  const isHoleGoingBeyondScreenEnd = hole.x >= CANVAS_WIDTH - HOLE_RADIUS * 4 && step > 0;
 
   const shouldHoleStop = isHoleGoingBeyondScreenStart || isHoleGoingBeyondScreenEnd;
 
@@ -19,9 +19,8 @@ export function moveHoleX(step: number) {
 export function moveHoleY(step: number) {
   const hole = gameState.hole;
 
-  const isHoleGoingBeyondCeil = gameState.hole.y + step < gameState.hole.points && step < 0;
-  const isHoleGoingBelowFloor =
-    gameState.hole.y + step > CANVAS_HEIGHT - gameState.hole.points && step > 0;
+  const isHoleGoingBeyondCeil = gameState.hole.y + step < HOLE_RADIUS && step < 0;
+  const isHoleGoingBelowFloor = gameState.hole.y + step > CANVAS_HEIGHT - HOLE_RADIUS && step > 0;
   const shouldStop = isHoleGoingBeyondCeil || isHoleGoingBelowFloor;
 
   if (shouldStop) {

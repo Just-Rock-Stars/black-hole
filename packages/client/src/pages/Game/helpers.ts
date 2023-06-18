@@ -1,8 +1,18 @@
-import { CANVAS_HEIGHT, CANVAS_WIDTH, Color, GAME_ENTITY_FONT, MOVE_STEP } from './constants';
+import {
+  CANVAS_HEIGHT,
+  CANVAS_WIDTH,
+  Color,
+  GAME_ENTITY_FONT,
+  HOLE_RADIUS,
+  MOVE_STEP,
+} from './constants';
 import { moveEnemiesX } from './enemiesHandlers';
 import { gameState } from './gameState';
+import { generateEnemies } from './generateEnemies';
 import { moveHoleX, moveHoleY } from './holeHandlers';
+import { swallowEnemy } from './swallowEnemy';
 import { TDraw } from './types';
+import { doOverlap } from './utils';
 
 const draw: TDraw = {
   space: (ctx) => {
@@ -12,11 +22,13 @@ const draw: TDraw = {
     }
   },
   enemies: (ctx) => {
+    generateEnemies();
+
     gameState.enemies.forEach((enemy) => {
       if (enemy.isVisible) {
         ctx.fillStyle = Color.ENEMY_ASTEROID_BODY;
         ctx.beginPath();
-        ctx.arc(enemy.x, enemy.y, enemy.points, 0, 2 * Math.PI);
+        ctx.arc(enemy.x, enemy.y, enemy.radius, 0, 2 * Math.PI);
         ctx.fill();
 
         ctx.font = GAME_ENTITY_FONT;
@@ -30,7 +42,7 @@ const draw: TDraw = {
 
     ctx.fillStyle = Color.HERO_BODY;
     ctx.beginPath();
-    ctx.arc(hole.x, hole.y, hole.points, 0, 2 * Math.PI);
+    ctx.arc(hole.x, hole.y, HOLE_RADIUS, 0, 2 * Math.PI);
     ctx.fill();
 
     ctx.font = GAME_ENTITY_FONT;
@@ -45,21 +57,16 @@ const swallowEnemiesNearby = () => {
   const enemiesIndicesToSwallow: number[] = [];
 
   enemies.forEach((enemy, enemyIndex) => {
-    const distanceBetweenCentersByX = Math.abs(hole.x - enemy.x);
-    const distanceBetweenCentersByY = Math.abs(hole.y - enemy.y);
+    const isOverlap = doOverlap({
+      en1: enemy,
+      en2: hole,
+      radius1: enemy.radius,
+      radius2: HOLE_RADIUS,
+    });
 
-    const distanceByX = Math.max(distanceBetweenCentersByX - hole.points - enemy.points, 0);
-    const distanceByY = Math.max(distanceBetweenCentersByY - hole.points - enemy.points, 0);
-
-    const haveOverlap = distanceByX === 0 && distanceByY === 0;
-
-    if (haveOverlap && enemy.points < hole.points) {
-      hole.points += enemy.points;
-      enemiesIndicesToSwallow.push(enemyIndex);
-    }
-
-    if (haveOverlap && enemy.points >= hole.points) {
-      hole.points -= enemy.points / 2;
+    if (isOverlap) {
+      const pointsChange = enemy.points < hole.points ? enemy.points : -enemy.points / 2;
+      swallowEnemy(pointsChange);
       enemiesIndicesToSwallow.push(enemyIndex);
     }
   });

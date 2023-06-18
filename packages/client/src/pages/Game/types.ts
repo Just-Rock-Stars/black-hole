@@ -12,6 +12,7 @@ export type TGameEntity = {
 
 type TEnemyProperties = {
   isVisible: boolean;
+  radius: number;
 };
 
 export type TEnemy = TGameEntity & TEnemyProperties;
