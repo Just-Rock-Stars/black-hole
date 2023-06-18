@@ -8,6 +8,7 @@ import { RoutePaths } from '@src/providers/Router/AppRouter/constants';
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from './constants';
 import { handleKeyDown } from './eventListeners';
 import { requestAnimation } from './mainEntry';
+import { TOnGameEnd } from './types';
 
 export const Game: FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -24,8 +25,13 @@ export const Game: FC = () => {
   }, []);
 
   useEffect(() => {
+    const gameStartTimestamp = Date.now();
     const listener = (e: KeyboardEvent) => {
-      handleKeyDown(e, () => navigate(RoutePaths.GAME_END));
+      const onGameEnd = (results: TOnGameEnd) => {
+        const playTime = results.gameEndTimeStamp - gameStartTimestamp;
+        navigate(RoutePaths.GAME_END);
+      };
+      handleKeyDown(e, onGameEnd);
     };
     window.addEventListener('keydown', listener);
     return () => {

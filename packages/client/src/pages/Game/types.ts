@@ -17,8 +17,17 @@ type TEnemyProperties = {
 
 export type TEnemy = TGameEntity & TEnemyProperties;
 
+export type THole = TGameEntity & { maxSize: number };
+
 export type TGameState = {
-  currentScreen: number;
-  hole: TGameEntity;
+  hole: THole;
   enemies: TEnemy[];
+  consumedEnemies: number;
+};
+
+export type TOnGameEnd = {
+  gameEndTimeStamp: number;
+  points: number;
+  maxSize: number;
+  consumedEnemies: number;
 };

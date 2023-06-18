@@ -2,8 +2,9 @@ import { MOVE_STEP } from './constants';
 import { moveEnemiesX } from './enemiesHandlers';
 import { moveHoleX, moveHoleY } from './holeHandlers';
 import { swallowEnemiesNearby } from './swallowEnemy';
+import { TOnGameEnd } from './types';
 
-export const handleKeyDown = (event: KeyboardEvent, onGameOver: () => void) => {
+export const handleKeyDown = (event: KeyboardEvent, onGameOver: (results: TOnGameEnd) => void) => {
   switch (event.key) {
     case 'ArrowUp':
       moveHoleY(-MOVE_STEP);
