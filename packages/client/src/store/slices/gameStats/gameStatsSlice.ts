@@ -5,7 +5,7 @@ import { TGameState, TSetGameStatsPayload } from './types';
 const initialState: TGameState = {
   consumedEnemies: null,
   maxSize: null,
-  playTime: null,
+  gameDuration: null,
   points: null,
 };
 
@@ -16,11 +16,13 @@ export const gameStatsSlice = createSlice({
     setGameStats: (
       state,
       {
-        payload: { consumedEnemies, maxSize, playTime, points },
+        payload: { consumedEnemies, maxPoints: maxSize, gameDuration: playTime, points },
       }: PayloadAction<TSetGameStatsPayload>
     ) => {
       state.consumedEnemies = consumedEnemies;
-      (state.maxSize = maxSize), (state.playTime = playTime), (state.points = points);
+      state.maxSize = maxSize;
+      state.gameDuration = playTime;
+      state.points = points;
     },
   },
 });

@@ -8,7 +8,12 @@ import { useAppSelector } from '@utils/useAppSelector';
 import { RoutePaths } from '@src/providers/Router/AppRouter/constants';
 
 export const GameEnd: FC = () => {
-  const { consumedEnemies, maxSize, playTime, points } = useAppSelector((state) => state.gameStats);
+  const {
+    consumedEnemies,
+    maxSize,
+    gameDuration: playTime,
+    points,
+  } = useAppSelector((state) => state.gameStats);
   const playTimeInSeconds = playTime ?? 0 / 1000;
   return (
     <>

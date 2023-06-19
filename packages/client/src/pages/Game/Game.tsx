@@ -37,9 +37,9 @@ export const Game: FC = () => {
         const playTime = gameEndTimeStamp - gameStartTimestamp;
         const gameStatistics: TSetGameStatsPayload = {
           consumedEnemies: consumedEnemies,
-          maxSize: maxSize,
+          maxPoints: maxSize,
           points: points,
-          playTime: playTime,
+          gameDuration: playTime,
         };
 
         dispatch(gameStatsSlice.actions.setGameStats(gameStatistics));

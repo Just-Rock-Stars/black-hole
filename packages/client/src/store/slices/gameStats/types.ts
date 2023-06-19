@@ -1,13 +1,13 @@
 export type TGameState = {
-  playTime: number | null;
+  gameDuration: number | null;
   points: number | null;
   maxSize: number | null;
   consumedEnemies: number | null;
 };
 
 export type TSetGameStatsPayload = {
-  playTime: number;
+  gameDuration: number;
   points: number;
-  maxSize: number;
+  maxPoints: number;
   consumedEnemies: number;
 };
