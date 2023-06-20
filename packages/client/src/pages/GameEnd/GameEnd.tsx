@@ -14,7 +14,7 @@ export const GameEnd: FC = () => {
     gameDuration: playTime,
     points,
   } = useAppSelector((state) => state.gameStats);
-  const playTimeInSeconds = playTime ?? 0 / 1000;
+  const playTimeInSeconds = (playTime ?? 0) / 1000;
   return (
     <>
       <Header />
@@ -28,19 +28,19 @@ export const GameEnd: FC = () => {
         <p className="font-bold text-xl my-2 text-zinc-900">Вот ваши впечатляющие достижения:</p>
         <ul className="list-disc pl-5">
           <li>
-            Время прохождения:
-            <span className="font-bold text-rose-500"> {playTimeInSeconds} </span>
+            Время прохождения:&nbsp;
+            <span className="font-bold text-rose-500">{Math.ceil(playTimeInSeconds)}</span>
           </li>
           <li>
-            Набранные очки: <span className="font-bold text-rose-500"> {points ?? 0} </span>
+            Набранные очки:&nbsp;<span className="font-bold text-rose-500">{points ?? 0}</span>
           </li>
           <li>
-            Максимальный размер:
-            <span className="font-bold text-rose-500"> {maxSize ?? 0} </span>
+            Максимальный размер:&nbsp;
+            <span className="font-bold text-rose-500">{maxSize ?? 0}</span>
           </li>
           <li>
-            Количество поглощенных объектов:
-            <span className="font-bold text-rose-500"> {consumedEnemies ?? 0} </span>
+            Количество поглощенных объектов:&nbsp;
+            <span className="font-bold text-rose-500">{consumedEnemies ?? 0}</span>
           </li>
         </ul>
         <p className="text-base my-2 text-zinc-900">
