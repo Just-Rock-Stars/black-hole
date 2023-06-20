@@ -9,6 +9,7 @@ const initialState: TGameState = {
   },
   enemies: [],
   consumedEnemies: 0,
+  isGameInProcess: false,
 };
 
 export let gameState: TGameState = JSON.parse(JSON.stringify(initialState));

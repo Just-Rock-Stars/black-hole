@@ -61,5 +61,8 @@ export const requestAnimation = (canvasContext: CanvasRenderingContext2D) => {
   draw.space(canvasContext);
   draw.enemies(canvasContext);
   draw.hole(canvasContext);
-  requestAnimationFrame(() => requestAnimation(canvasContext));
+
+  if (gameState.isGameInProcess) {
+    requestAnimationFrame(() => requestAnimation(canvasContext));
+  }
 };

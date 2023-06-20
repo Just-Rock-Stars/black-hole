@@ -23,6 +23,7 @@ export type TGameState = {
   hole: THole;
   enemies: TEnemy[];
   consumedEnemies: number;
+  isGameInProcess: boolean;
 };
 
 export type TOnGameEnd = {

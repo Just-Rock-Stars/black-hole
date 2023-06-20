@@ -12,7 +12,7 @@ import { RoutePaths } from '@src/providers/Router/AppRouter/constants';
 
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from './constants';
 import { handleKeyDown } from './eventListeners';
-import { resetGameState } from './gameState';
+import { gameState, resetGameState } from './gameState';
 import { requestAnimation } from './mainEntry';
 import { TOnGameEnd } from './types';
 
@@ -27,6 +27,8 @@ export const Game: FC = () => {
 
     const canvasContext = canvas.getContext('2d');
     if (canvasContext === null) return;
+
+    gameState.isGameInProcess = true;
 
     requestAnimation(canvasContext);
   }, []);
