@@ -1,0 +1,15 @@
+{
+  "background_color": "white",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "./logo.png",
+      "type": "image/png",
+      "sizes": "256x256"
+    }
+  ],
+  "id": "/?homescreen=1",
+  "lang": "ru",
+  "name": "Black hole",
+  "start_url": "/?homescreen=1"
+}

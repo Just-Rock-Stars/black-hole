@@ -33,6 +33,7 @@
   },
   "include": [
     "./src",
+    "./public/serviceworker.js",
     "./.eslintrc.js",
     "./jest.config.js",
     "./postcss.config.js",

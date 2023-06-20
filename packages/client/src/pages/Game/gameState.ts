@@ -1,6 +1,6 @@
 import { TGameState } from './types';
 
-export const gameState: TGameState = {
+const initialState: TGameState = {
   hole: {
     points: 50,
     maxSize: 50,
@@ -9,4 +9,10 @@ export const gameState: TGameState = {
   },
   enemies: [],
   consumedEnemies: 0,
+};
+
+export let gameState: TGameState = JSON.parse(JSON.stringify(initialState));
+
+export const resetGameState = () => {
+  gameState = JSON.parse(JSON.stringify(initialState));
 };
