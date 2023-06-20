@@ -9,6 +9,10 @@ import { App } from './App';
 import './index.css';
 import { store } from './store';
 
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/serviceworker.js');
+}
+
 createRoot(document.getElementById('root') as HTMLElement).render(
   <StrictMode>
     <ErrorBoundary>

@@ -1,7 +1,11 @@
+import clsx from 'clsx';
 import { FC, useEffect } from 'react';
 
 import { authActions, getAuthUserInfo } from '@store/slices/auth/authSlice';
 
+import { NoInternetConnectionNotification } from '@components/NoInternetConnectionNotification';
+
+import { useIsOnline } from '@utils/isOnline';
 import { useAppDispatch } from '@utils/useAppDispatch';
 import { useAppSelector } from '@utils/useAppSelector';
 
@@ -16,9 +20,18 @@ export const App: FC = () => {
     dispatch(authActions.initAuthData());
   }, [dispatch]);
 
+  const { isOnline } = useIsOnline();
+
   if (!isInitiated) {
     return null;
   }
 
-  return <AppRouter />;
+  return (
+    <>
+      <NoInternetConnectionNotification />
+      <div className={clsx(!isOnline && 'grayscale')}>
+        <AppRouter />
+      </div>
+    </>
+  );
 };
