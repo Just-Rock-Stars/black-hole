@@ -20,8 +20,8 @@ export function moveHoleX(step: number) {
 export function moveHoleY(step: number) {
   const hole = gameState.hole;
 
-  const isHoleGoingBeyondCeil = gameState.hole.y + step < HOLE_RADIUS && step < 0;
-  const isHoleGoingBelowFloor = gameState.hole.y + step > CANVAS_HEIGHT - HOLE_RADIUS && step > 0;
+  const isHoleGoingBeyondCeil = hole.y + step < HOLE_RADIUS && step < 0;
+  const isHoleGoingBelowFloor = hole.y + step > CANVAS_HEIGHT - HOLE_RADIUS && step > 0;
   const shouldStop = isHoleGoingBeyondCeil || isHoleGoingBelowFloor;
 
   if (shouldStop) {
