@@ -102,9 +102,11 @@ const startServer = async () => {
       const [appHtml, store] = await render(request.url, {
         userRepo: new UserRepository(request.headers['cookie']),
       });
+      const initialState = JSON.stringify(store).replace(/</g, '\\u003c');
+
       const html = template
         .replace('<!--ssr-outlet-->', appHtml)
-        .replace('<!--store-data-->', `window.initialState = ${JSON.stringify(store)}`);
+        .replace('<!--store-data-->', `window.initialState = ${initialState}`);
 
       response.status(200).set({ 'Content-Type': 'text/html' }).end(html);
     } catch (error) {

@@ -7,7 +7,7 @@
     "check-types": "lerna run check-types --scope={client,server}",
     "dev": "lerna run dev",
     "dev:client": "lerna run dev --scope=client",
-    "dev:server": "cross-env SERVER=local lerna run dev --scope=server",
+    "dev:server": "lerna run dev --scope=server",
     "format": "lerna run format",
     "lint": "lerna run lint",
     "preview": "lerna run preview",
