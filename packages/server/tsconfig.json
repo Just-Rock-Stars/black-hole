@@ -25,13 +25,6 @@
     },
     "outDir": "dist"
   },
-  "include": [
-    "./.eslintrc.js",
-    "./index.ts",
-    "./db.ts",
-    "./__tests__/**/*",
-    "./jest.config.js",
-    "./tailwind.config.js",
-    "../server"
-  ]
+  "exclude": ["./node_modules", "./dist"],
+  "include": ["./"]
 }
