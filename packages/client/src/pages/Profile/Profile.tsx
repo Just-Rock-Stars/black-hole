@@ -37,7 +37,7 @@ export const Profile = () => {
       display_name,
       email,
       first_name,
-      id: Number(id),
+      id: id,
       login,
       phone,
       second_name,
