@@ -8,6 +8,7 @@ import { authApi } from '@api/authApi';
 
 import { FormButton } from '@components/FormButton';
 import { Input } from '@components/Input';
+import { YandexAuth } from '@components/Oauth/YandexAuth';
 
 import { validateLogin, validatePassword } from '@utils/authFormValidation';
 import { isNetworkError } from '@utils/isNetworkError';
@@ -97,6 +98,7 @@ export const SignIn: FC = () => {
         <Link className="btn btn-secondary text-center w-full" title="Регистрация" to="/sign-up">
           Регистрация
         </Link>
+        <YandexAuth />
       </form>
     </div>
   );

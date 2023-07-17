@@ -14,4 +14,5 @@ export const RoutePaths: Record<AppRoutes, string> = {
   [AppRoutes.SIGN_IN]: '/sign-in',
   [AppRoutes.SIGN_UP]: '/sign-up',
   [AppRoutes.NOT_FOUND]: '*',
+  [AppRoutes.SERVER_ERROR]: '/500',
 };

@@ -14,6 +14,7 @@ export enum AppRoutes {
   SIGN_IN = 'SIGN_IN',
   SIGN_UP = 'SIGN_UP',
   NOT_FOUND = 'NOT_FOUND',
+  SERVER_ERROR = 'SERVER_ERROR',
 }
 
 export type TAppRouteProps = RouteProps & {

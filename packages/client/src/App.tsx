@@ -8,6 +8,9 @@ import { NoInternetConnectionNotification } from '@components/NoInternetConnecti
 
 import { useIsOnline } from '@utils/isOnline';
 import { useAppDispatch } from '@utils/useAppDispatch';
+import { useAppSelector } from '@utils/useAppSelector';
+
+import { useAuth } from '@src/hooks/useAuth';
 
 import { AppRouter } from './providers/AppRouter';
 
@@ -19,7 +22,9 @@ export const App: FC = () => {
     dispatch(authActions.initAuthData());
   }, [dispatch]);
 
+  const isInitiated = useAppSelector((state) => state.auth.isInitiated);
   const { isOnline } = useIsOnline();
+  useAuth();
 
   return (
     <>

@@ -6,9 +6,11 @@ import { authReducer } from './slices/auth/authSlice';
 import { TAuthState } from './slices/auth/types';
 import { gameStatsSlice } from './slices/gameStats/gameStatsSlice';
 import { TGameState } from './slices/gameStats/types';
+import { soundReducer } from './slices/sound/soundSlice';
 
 const rootReducer = combineReducers({
   auth: authReducer,
+  sound: soundReducer,
   gameStats: gameStatsSlice.reducer,
 });
 
