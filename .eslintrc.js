@@ -40,13 +40,7 @@ module.exports = {
     'arrow-parens': 1,
     'max-params': ['error', 3],
     'no-duplicate-imports': 1,
-    'no-restricted-syntax': [
-      1,
-      {
-        selector: 'ExportDefaultDeclaration',
-        message: 'Prefer named exports.',
-      },
-    ],
+    'no-restricted-syntax': [0],
     'no-tabs': 1,
   },
 };
