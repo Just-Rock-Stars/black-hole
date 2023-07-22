@@ -16,7 +16,7 @@ export const Navbar: FC<TNavbarProps> = ({ orientation }) => {
     : navigationItems.forNotAuthenticatedUsers;
 
   return (
-    <nav>
+    <nav className="flex items-center">
       <ul
         className={clsx(
           'items-center gap-2 justify-end w-full gap-x-4',
@@ -26,7 +26,10 @@ export const Navbar: FC<TNavbarProps> = ({ orientation }) => {
       >
         {_navigationItems.map((navigationItem) => (
           <li key={navigationItem.url}>
-            <Link className="text-white hover:text-blue-200" to={navigationItem.url}>
+            <Link
+              className="text-black hover:text-blue-500 dark:text-white dark:hover:text-blue-300"
+              to={navigationItem.url}
+            >
               {navigationItem.text}
             </Link>
           </li>

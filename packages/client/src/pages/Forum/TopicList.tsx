@@ -78,10 +78,7 @@ export const TopicList: FC = () => {
         </nav>
         {topic.map(({ title, answers, author, lastPublic, id }) => {
           return (
-            <div
-              className="flex cursor-pointer odd:bg-white/20 text-white rounded-xl px-2"
-              key={id}
-            >
+            <div className="flex cursor-pointer odd:bg-white/20 rounded-xl px-2" key={id}>
               <div className="w-1/12">
                 <img
                   alt="Author_Icon"
@@ -110,7 +107,7 @@ export const TopicList: FC = () => {
           );
         })}
       </div>
-      {isNewTopicOpen === true && <NewTopic setIsNewTopicOpen={setIsNewTopicOpen} />}
+      {isNewTopicOpen && <NewTopic setIsNewTopicOpen={setIsNewTopicOpen} />}
     </>
   );
 };
