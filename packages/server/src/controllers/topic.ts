@@ -6,7 +6,7 @@ import { ITopicService } from '../services/topicsService';
 
 export interface ITopicController {
   create: RequestHandler<void, TTopicDto, TCreateTopicDto>;
-  getByForumId: RequestHandler<{ id: number }, TTopicDto[]>;
+  getByForumId: RequestHandler<void, TTopicDto[], void, { forumId: number }>;
 }
 
 export class TopicController implements ITopicController {
@@ -18,8 +18,8 @@ export class TopicController implements ITopicController {
     res.send(result);
   };
 
-  getByForumId: RequestHandler<{ id: number }, TTopicDto[], void> = async (req, res) => {
-    const result = await this.topicService.getAllTopicsByForumId(req.params.id);
+  getByForumId: RequestHandler<void, TTopicDto[], void, { forumId: number }> = async (req, res) => {
+    const result = await this.topicService.getAllTopicsByForumId(req.query.forumId);
 
     res.send(result);
   };

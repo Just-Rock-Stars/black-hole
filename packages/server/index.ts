@@ -81,12 +81,6 @@ const startServer = async () => {
     app.use(express.static(spaBundleDistPath));
   }
 
-  app.get('/api', (request, response) => {
-    response.json('👋 Howdy from the server :)');
-  });
-
-  app.use(router);
-
   app.get('*', async (request, response, next) => {
     try {
       let template = '';
@@ -129,6 +123,8 @@ const startServer = async () => {
       next(error);
     }
   });
+
+  app.use(router);
 
   app.use(errorsHandler);
 

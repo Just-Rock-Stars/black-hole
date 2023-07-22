@@ -14,8 +14,8 @@ export class User extends Model<InferAttributes<User>, InferCreationAttributes<U
     @Column(DataType.INTEGER)
     declare YaId: number
 
-    @Column(DataType.STRING)
     @IsUrl
+    @Column(DataType.STRING)
     declare Avatar: string | null;
 
     @HasMany(() => Comment)

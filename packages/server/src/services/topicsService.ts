@@ -44,21 +44,31 @@ export class TopicService implements ITopicService {
 
         existingAuthor = author;
       } else {
-        if (!authorName) {
+        if (yaId) {
+          existingAuthor = await User.findOne({ where: { YaId: yaId } });
+        }
+
+        if (!authorName && !existingAuthor) {
           throw new BadRequest("You didn't provide author");
         }
 
-        existingAuthor = await User.create(
-          {
-            Avatar: avatar ?? null,
-            Comments: [],
-            Name: authorName,
-            Replies: [],
-            Topics: [],
-            YaId: yaId,
-          },
-          { transaction: t }
-        );
+        if (authorName) {
+          existingAuthor = await User.create(
+            {
+              Avatar: avatar ?? null,
+              Comments: [],
+              Name: authorName,
+              Replies: [],
+              Topics: [],
+              YaId: yaId,
+            },
+            { transaction: t }
+          );
+        }
+      }
+
+      if (!existingAuthor) {
+        throw new NotFountError("Author doesn't exist");
       }
 
       const topic = await ForumTopic.create(
@@ -86,8 +96,8 @@ export class TopicService implements ITopicService {
       include: [
         {
           model: Comment,
-          attributes: ['AuthorYaId', 'createdAt'],
-          include: [{ model: Reply, attributes: ['AuthorYaId', 'createdAt'] }],
+          attributes: ['UserId', 'createdAt'],
+          include: [{ model: Reply, attributes: ['UserId', 'createdAt'] }],
         },
       ],
     });

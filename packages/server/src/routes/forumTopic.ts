@@ -9,6 +9,6 @@ const router = Router();
 const controller = new TopicController(new TopicService(sequelize));
 
 router.post('/', controller.create);
-router.get('/:id', controller.getByForumId);
+router.get('/', controller.getByForumId);
 
 export default router;

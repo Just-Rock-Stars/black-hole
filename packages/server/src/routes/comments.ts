@@ -9,4 +9,6 @@ const router = Router();
 const controller = new CommentsController(new CommentsService(sequelize));
 
 router.post('/', controller.post);
-router.get('/:topicId', controller.getCommentsByTopicId);
+router.get('/', controller.getCommentsByTopicId);
+
+export default router;

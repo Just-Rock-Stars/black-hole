@@ -6,7 +6,7 @@ import { ICommentsServices } from '../services/commentsService';
 
 export interface ICommentsController {
   post: RequestHandler<void, TCommentDto, TCreateCommentDto>;
-  getCommentsByTopicId: RequestHandler<{ topicId: number }, TCommentDto[], void>;
+  getCommentsByTopicId: RequestHandler<void, TCommentDto[], void, { topicId: number }>;
 }
 
 export class CommentsController implements ICommentsController {
@@ -18,11 +18,11 @@ export class CommentsController implements ICommentsController {
     res.send(comment);
   };
 
-  getCommentsByTopicId: RequestHandler<{ topicId: number }, TCommentDto[], void> = async (
+  getCommentsByTopicId: RequestHandler<void, TCommentDto[], void, { topicId: number }> = async (
     req,
     res
   ) => {
-    const comments = await this._commentsService.getCommentsAndRepliesByTopicId(req.params.topicId);
+    const comments = await this._commentsService.getCommentsAndRepliesByTopicId(req.query.topicId);
 
     res.send(comments);
   };
