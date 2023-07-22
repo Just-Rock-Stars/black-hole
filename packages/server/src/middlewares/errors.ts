@@ -9,3 +9,9 @@ export class NotFountError extends AppError {
     super(message, 404);
   }
 }
+
+export class BadRequest extends AppError {
+  constructor(message: string) {
+    super(message, 400);
+  }
+}

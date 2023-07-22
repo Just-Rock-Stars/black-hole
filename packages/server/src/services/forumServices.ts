@@ -15,11 +15,10 @@ export interface IForumService {
 
 export class ForumServices implements IForumService {
   constructor(private _db: Sequelize) {}
-  public async createForum({ authorId, description, name }: TCreateForumDto) {
+  public async createForum({ description, name }: TCreateForumDto) {
     const forum = await this._db.transaction((t) => {
       return Forum.create(
         {
-          AuthorYaId: authorId,
           Description: description,
           Name: name,
           Topics: [],

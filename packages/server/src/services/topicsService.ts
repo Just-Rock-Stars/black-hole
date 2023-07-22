@@ -4,9 +4,10 @@ import { Comment } from '../Models/Comment';
 import { Forum } from '../Models/Forum';
 import { ForumTopic } from '../Models/ForumTopic';
 import { Reply } from '../Models/Reply';
+import { User } from '../Models/User';
 import { TCreateTopicDto } from '../dtos/createTopicDto';
 import { TTopicDto } from '../dtos/topicDto';
-import { NotFountError } from '../middlewares/errors';
+import { BadRequest, NotFountError } from '../middlewares/errors';
 
 export interface ITopicService {
   createTopic(dto: TCreateTopicDto): Promise<TTopicDto>;
@@ -17,17 +18,53 @@ export interface ITopicService {
 export class TopicService implements ITopicService {
   constructor(private _db: Sequelize) {}
 
-  async createTopic({ authorId, forumId, name }: TCreateTopicDto): Promise<TTopicDto> {
+  async createTopic({
+    authorId,
+    forumId,
+    name,
+    authorName,
+    avatar,
+    yaId,
+  }: TCreateTopicDto): Promise<TTopicDto> {
     const forum = await Forum.findByPk(forumId);
 
     if (!forum) {
       throw new NotFountError("Forum doesn't exist");
     }
 
-    const newTopic = await this._db.transaction((t) => {
-      return ForumTopic.create(
+    const newTopic = await this._db.transaction(async (t) => {
+      let existingAuthor: User | null = null;
+
+      if (authorId) {
+        const author = await User.findByPk(authorId);
+
+        if (!author) {
+          throw new NotFountError("User doesn't exist");
+        }
+
+        existingAuthor = author;
+      } else {
+        if (!authorName) {
+          throw new BadRequest("You didn't provide author");
+        }
+
+        existingAuthor = await User.create(
+          {
+            Avatar: avatar ?? null,
+            Comments: [],
+            Name: authorName,
+            Replies: [],
+            Topics: [],
+            YaId: yaId,
+          },
+          { transaction: t }
+        );
+      }
+
+      const topic = await ForumTopic.create(
         {
-          AuthorYandexId: authorId,
+          User: existingAuthor,
+          UserId: existingAuthor.id,
           Comments: [],
           Forum: forum,
           ForumId: forum.id,
@@ -35,9 +72,12 @@ export class TopicService implements ITopicService {
         },
         { transaction: t }
       );
+
+      await existingAuthor.update('Topics', [topic], { transaction: t });
+      return topic;
     });
 
-    return { authorId: newTopic.AuthorYandexId, commentsNumber: 0, topicName: newTopic.TopicName };
+    return { authorId: newTopic.UserId, commentsNumber: 0, topicName: newTopic.TopicName };
   }
 
   async getAllTopicsByForumId(id: number): Promise<TTopicDto[]> {
@@ -55,10 +95,10 @@ export class TopicService implements ITopicService {
     return topics.map((t) => {
       const lastMessage = this.getLastCommentOrReply(t);
       return {
-        authorId: t.AuthorYandexId,
+        authorId: t.UserId,
         commentsNumber: this.countComments(t),
         topicName: t.TopicName,
-        lastMessageAuthor: lastMessage?.AuthorYaId ?? null,
+        lastMessageAuthor: lastMessage?.UserId ?? null,
         lastMessageDate: lastMessage?.createdAt ?? null,
       };
     });

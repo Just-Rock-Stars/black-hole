@@ -1,7 +1,7 @@
 import { InferAttributes, InferCreationAttributes } from 'sequelize';
-import { AllowNull, BelongsTo, Column, DataType, ForeignKey, HasMany, Model, Table } from 'sequelize-typescript';
+import { AllowNull, BelongsTo, Column, DataType, ForeignKey, Model, Table } from 'sequelize-typescript';
 import { Comment } from './Comment';
-import Reaction from './Reaction';
+import { User } from './User';
 
 @Table
 export class Reply extends Model<InferAttributes<Reply>, InferCreationAttributes<Reply>> {
@@ -9,17 +9,9 @@ export class Reply extends Model<InferAttributes<Reply>, InferCreationAttributes
     @Column(DataType.STRING)
     declare Text: string
 
-    // Добавить пользователя
-    @AllowNull(false)
-    @Column(DataType.INTEGER)
-    declare AuthorYaId: number
-
     @AllowNull(false)
     @Column(DataType.DATE)
     declare createdAt: Date;
-
-    @HasMany(() => Reaction, {onDelete: 'CASCADE'})
-    declare Reactions: Reaction[]
 
     @ForeignKey(() => Comment)
     @Column
@@ -27,4 +19,11 @@ export class Reply extends Model<InferAttributes<Reply>, InferCreationAttributes
 
     @BelongsTo(() => Comment)
     declare Comment: Comment
+
+    @ForeignKey(() => User)
+    @Column
+    declare UserId: number
+
+    @BelongsTo(() => User)
+    declare User: User
 }

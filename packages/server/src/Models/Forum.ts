@@ -19,10 +19,6 @@ export class Forum extends Model<InferAttributes<Forum>, InferCreationAttributes
     @Column(DataType.STRING)
     declare Description: string
 
-    @AllowNull(false)
-    @Column(DataType.INTEGER)
-    declare AuthorYaId: number
-
     @HasMany(() => ForumTopic, {onDelete: 'CASCADE'})
     declare Topics: ForumTopic[]
 }

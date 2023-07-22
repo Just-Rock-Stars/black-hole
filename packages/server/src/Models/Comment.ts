@@ -1,8 +1,8 @@
 import { InferAttributes, InferCreationAttributes } from 'sequelize';
 import { AllowNull, BelongsTo, Column, DataType, ForeignKey, HasMany, Model, Table } from 'sequelize-typescript';
 import { ForumTopic } from './ForumTopic';
-import Reaction from './Reaction';
 import { Reply } from './Reply';
+import { User } from './User';
 
 // type TCommentDto = {
 //     text: string;
@@ -19,18 +19,11 @@ export class Comment extends Model<InferAttributes<Comment>, InferCreationAttrib
     declare Text: string
 
     @AllowNull(false)
-    @Column(DataType.INTEGER)
-    declare AuthorYaId: number
-
-    @AllowNull(false)
     @Column(DataType.DATE)
     declare createdAt: Date;
 
     @HasMany(() => Reply, {onDelete: 'CASCADE'})
     declare Replies: Reply[]
-
-    @HasMany(() => Reaction, {onDelete: 'CASCADE'})
-    declare Reactions: Reaction[]
 
     @BelongsTo(() => ForumTopic)
     declare ForumTopic: ForumTopic
@@ -38,4 +31,11 @@ export class Comment extends Model<InferAttributes<Comment>, InferCreationAttrib
     @ForeignKey(() => ForumTopic)
     @Column
     declare TopicId: number;
+
+    @BelongsTo(() => User)
+    declare User: User
+
+    @ForeignKey(() => User)
+    @Column
+    declare UserId: number;
 }

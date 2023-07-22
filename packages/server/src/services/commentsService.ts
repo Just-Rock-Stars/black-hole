@@ -2,36 +2,68 @@ import { Sequelize } from 'sequelize';
 
 import { Comment } from '../Models/Comment';
 import { ForumTopic } from '../Models/ForumTopic';
+import { Reply } from '../Models/Reply';
+import { User } from '../Models/User';
 import { TCommentDto } from '../dtos/commentDto';
-import { TPostCommentDto } from '../dtos/postCommentDto';
-import { NotFountError } from '../middlewares/errors';
+import { TCreateCommentDto } from '../dtos/createCommentDto';
+import { BadRequest, NotFountError } from '../middlewares/errors';
 
 export interface ICommentsServices {
-  createComment: (dto: TPostCommentDto) => Promise<TCommentDto>;
-  getCommentsByTopicId: (id: number) => Promise<TCommentDto[]>;
+  createComment: (dto: TCreateCommentDto) => Promise<TCommentDto>;
+  getCommentsAndRepliesByTopicId: (id: number) => Promise<TCommentDto[]>;
 }
 
 export class CommentsService implements ICommentsServices {
   constructor(private _db: Sequelize) {}
-  createComment: (dto: TPostCommentDto) => Promise<TCommentDto> = async ({
+  createComment: (dto: TCreateCommentDto) => Promise<TCommentDto> = async ({
     authorId,
     text,
     topicId,
+    authorAvatar,
+    authorName,
+    authorYaId,
   }) => {
-    const comment = await this._db.transaction(async (t) => {
-      const topic = await ForumTopic.findByPk(topicId);
+    let author: User | null = null;
 
-      if (topic === null) {
-        throw new NotFountError("Topic doesn't exist");
+    if (authorId) {
+      author = await User.findByPk(authorId);
+
+      if (!author) {
+        throw new NotFountError("User doesn't exist");
+      }
+    }
+
+    const topic = await ForumTopic.findByPk(topicId);
+
+    if (topic === null) {
+      throw new NotFountError("Topic doesn't exist");
+    }
+    const comment = await this._db.transaction(async (t) => {
+      if (!author) {
+        if (!authorYaId || !authorName) {
+          throw new BadRequest('Please provide author id or user name and yandex id');
+        }
+
+        author = await User.create(
+          {
+            Comments: [],
+            Name: authorName,
+            Replies: [],
+            Topics: [],
+            YaId: authorYaId,
+            Avatar: authorAvatar,
+          },
+          { transaction: t }
+        );
       }
 
       const creationDate = new Date();
 
       return Comment.create(
         {
-          AuthorYaId: authorId,
+          User: author,
+          UserId: author.id,
           Text: text,
-          Reactions: [],
           Replies: [],
           createdAt: creationDate,
           ForumTopic: topic,
@@ -42,18 +74,50 @@ export class CommentsService implements ICommentsServices {
       );
     });
 
-    return { authorId: comment.AuthorYaId, text: comment.Text };
+    if (!author) {
+      throw new NotFountError("USer doesn't exist");
+    }
+
+    return {
+      authorId: comment.UserId,
+      text: comment.Text,
+      authorName: author.Name,
+      avatar: author.Avatar,
+      yaId: author.YaId,
+      replies: [],
+    };
   };
 
-  getCommentsByTopicId: (id: number) => Promise<TCommentDto[]> = async (id) => {
+  getCommentsAndRepliesByTopicId: (id: number) => Promise<TCommentDto[]> = async (id) => {
     const topic = await ForumTopic.findByPk(id, {
-      include: { model: Comment, attributes: ['Text', 'AuthorYaId'] },
+      include: {
+        model: Comment,
+        attributes: ['Text'],
+        include: [
+          { model: User, attributes: ['Name', 'YaId', 'Avatar'] },
+          { model: Reply, include: [{ model: User, attributes: ['Name', 'YaId', 'Avatar'] }] },
+        ],
+      },
     });
 
     if (!topic) {
       throw new NotFountError("Topic doesn't exist");
     }
 
-    return topic.Comments.map((x) => ({ authorId: x.AuthorYaId, text: x.Text }));
+    return topic.Comments.map((x) => ({
+      authorId: x.UserId,
+      text: x.Text,
+      authorName: x.User.Name,
+      avatar: x.User.Avatar,
+      yaId: x.User.YaId,
+      replies: x.Replies.map((y) => ({
+        authorId: y.UserId,
+        yaId: y.User.YaId,
+        authorName: y.User.Name,
+        avatar: y.User.Avatar ?? null,
+        text: y.Text,
+        toCommentId: x.id,
+      })),
+    }));
   };
 }

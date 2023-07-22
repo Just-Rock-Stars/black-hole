@@ -1,5 +1,8 @@
 export type TCreateTopicDto = {
   forumId: number;
-  authorId: number;
   name: string;
+  yaId: number;
+  authorId?: number;
+  authorName?: string;
+  avatar?: string;
 };
