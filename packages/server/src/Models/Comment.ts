@@ -4,14 +4,6 @@ import { ForumTopic } from './ForumTopic';
 import { Reply } from './Reply';
 import { User } from './User';
 
-// type TCommentDto = {
-//     text: string;
-//     id: number;
-//     userAvatar?: string;
-//     userName: string;
-//     toUserName?: string;
-//     toCommentId?: number;
-// }
 @Table
 export class Comment extends Model<InferAttributes<Comment>, InferCreationAttributes<Comment>> {
     @AllowNull(false)

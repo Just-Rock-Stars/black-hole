@@ -4,15 +4,6 @@ import { Comment } from './Comment';
 import { Forum } from './Forum';
 import { User } from './User';
 
-// type TopicDto = {
-//     authorName: string;
-//     authorAvatar: string;
-//     topicName: string;
-//     lastMessageDate?: string;
-//     lastMessageAuthor?: string;
-//     commentsNumber: number;
-// }
-
 @Table
 export class ForumTopic extends Model<InferAttributes<ForumTopic>, InferCreationAttributes<ForumTopic>> {
     @AllowNull(false)
