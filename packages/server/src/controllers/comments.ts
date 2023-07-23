@@ -12,18 +12,29 @@ export interface ICommentsController {
 export class CommentsController implements ICommentsController {
   constructor(private _commentsService: ICommentsServices) {}
 
-  post: RequestHandler<void, TCommentDto, TCreateCommentDto> = async (req, res) => {
-    const comment = await this._commentsService.createComment(req.body);
+  post: RequestHandler<void, TCommentDto, TCreateCommentDto> = async (req, res, next) => {
+    try {
+      const comment = await this._commentsService.createComment(req.body);
 
-    res.send(comment);
+      res.send(comment);
+    } catch (error) {
+      next(error);
+    }
   };
 
   getCommentsByTopicId: RequestHandler<void, TCommentDto[], void, { topicId: number }> = async (
     req,
-    res
+    res,
+    next
   ) => {
-    const comments = await this._commentsService.getCommentsAndRepliesByTopicId(req.query.topicId);
+    try {
+      const comments = await this._commentsService.getCommentsAndRepliesByTopicId(
+        req.query.topicId
+      );
 
-    res.send(comments);
+      res.send(comments);
+    } catch (error) {
+      next(error);
+    }
   };
 }

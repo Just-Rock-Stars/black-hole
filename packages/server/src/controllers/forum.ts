@@ -12,14 +12,22 @@ export interface IForumController {
 export class ForumController implements IForumController {
   constructor(private _forumService: IForumService) {}
 
-  public create: RequestHandler<TCreateForumDto, TForumDto> = async (req, res) => {
-    const result = await this._forumService.createForum(req.body);
-    res.send(result);
+  public create: RequestHandler<TCreateForumDto, TForumDto> = async (req, res, next) => {
+    try {
+      const result = await this._forumService.createForum(req.body);
+      res.send(result);
+    } catch (error) {
+      next(error);
+    }
   };
 
-  public getAll: RequestHandler<void, TForumDto[]> = async (_req, res) => {
-    const result = await this._forumService.getAllForums();
+  public getAll: RequestHandler<void, TForumDto[]> = async (_req, res, next) => {
+    try {
+      const result = await this._forumService.getAllForums();
 
-    res.send(result);
+      res.send(result);
+    } catch (error) {
+      next(error);
+    }
   };
 }

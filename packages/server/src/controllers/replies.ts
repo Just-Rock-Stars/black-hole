@@ -11,9 +11,13 @@ export interface IRepliesController {
 export class RepliesController implements IRepliesController {
   constructor(private _repliesService: IRepliesService) {}
 
-  create: RequestHandler<void, TReplyDto, TCreateReplyDto> = async (req, res) => {
-    const reply = await this._repliesService.createReply(req.body);
+  create: RequestHandler<void, TReplyDto, TCreateReplyDto> = async (req, res, next) => {
+    try {
+      const reply = await this._repliesService.createReply(req.body);
 
-    res.send(reply);
+      res.send(reply);
+    } catch (error) {
+      next(error);
+    }
   };
 }

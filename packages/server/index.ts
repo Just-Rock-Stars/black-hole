@@ -126,11 +126,11 @@ const startServer = async () => {
 
   app.use(router);
 
-  app.use(errorsHandler);
-
   app.listen(port, () => {
     console.log(`  ➜ 🎸 Server is listening on port: ${port}`);
   });
+
+  app.use(errorsHandler);
 };
 
 startServer();
