@@ -7,10 +7,12 @@ import { TAuthState } from './slices/auth/types';
 import { gameStatsSlice } from './slices/gameStats/gameStatsSlice';
 import { TGameState } from './slices/gameStats/types';
 import { soundReducer } from './slices/sound/soundSlice';
+import { themeReducer } from './slices/theme/themeSlice';
 
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
   auth: authReducer,
   sound: soundReducer,
+  theme: themeReducer,
   gameStats: gameStatsSlice.reducer,
 });
 

@@ -1,7 +1,7 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Header } from '@components/Header';
+import { leaderboardApi } from '@api/leaderboardApi';
 
 import { useAppSelector } from '@utils/useAppSelector';
 
@@ -15,6 +15,29 @@ export const GameEnd: FC = () => {
     points,
   } = useAppSelector((state) => state.gameStats);
   const playTimeInSeconds = (playTime ?? 0) / 1000;
+
+  useEffect(() => {
+    if (!maxSize || !consumedEnemies) return;
+
+    const userData = localStorage.getItem('user');
+
+    if (!userData) return;
+
+    const user = JSON.parse(userData);
+
+    leaderboardApi.saveResult({
+      data: {
+        userDisplayName: user.display_name,
+        userID: user.id,
+        userAvatar: user.avatar,
+        score: maxSize,
+        consumedEnemies: consumedEnemies,
+      },
+      ratingFieldName: 'score',
+      teamName: 'JustRockStars',
+    });
+  }, [maxSize, consumedEnemies]);
+
   return (
     <section className="page-container overlay my-6 px-4 lg:px-10 flex flex-col">
       <h1 className="font-black m-0 text-center text-4xl my-6">GAME OVER</h1>

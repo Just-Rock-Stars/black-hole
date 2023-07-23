@@ -1,54 +1,60 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 
-import { Header } from '@components/Header';
+import { leaderboardApi } from '@api/leaderboardApi/leaderboardApi';
 
-const people = [
-  {
-    name: 'Calvin Hawkins',
-    email: 'calvin.hawkins@example.com',
-    image:
-      'https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    score: 2000,
-  },
-  {
-    name: 'Kristen Ramos',
-    email: 'kristen.ramos@example.com',
-    image:
-      'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    score: 1800,
-  },
-  {
-    name: 'Ted Fox',
-    email: 'ted.fox@example.com',
-    image:
-      'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    score: 1344,
-  },
-];
+import { Pagination } from '@components/Pagination/Pagination';
+
+import { LeadersListItem } from './LeadersListItem/LeadersListItem';
+import { TLeaderboardItems } from './types';
+import { paginationLeaders, paginationPages } from './utils';
 
 export const Leaderboard: FC = () => {
+  const [leaders, setLeaders] = useState<TLeaderboardItems[]>([]);
+  const [currectLeaders, setCurrectLeaders] = useState<TLeaderboardItems[]>([]);
+  const [pages, setPages] = useState<number[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(0);
+
+  useEffect(() => {
+    async function getData() {
+      const response = await leaderboardApi.getLeaderBoard({
+        ratingFieldName: 'score',
+        cursor: 0,
+        limit: 100,
+      });
+
+      const data = response.data;
+      setPages(paginationPages(data));
+      setLeaders(data);
+      setCurrectLeaders(paginationLeaders(data, currentPage));
+    }
+    if (leaders.length === 0) {
+      getData();
+    }
+  }, [leaders.length, currentPage]);
+
+  // Разделение и отрисовка лидеров на странице в зависимости от неё
+  useEffect(() => {
+    setCurrectLeaders(paginationLeaders(leaders, currentPage));
+  }, [currentPage, leaders]);
+
   return (
     <section className="overlay page-container my-6">
-      <h1 className="font-extrabold text-4xl">Leaderboard</h1>
-      <ul className="divide-y divide-gray-200">
-        {people.map((person, i) => (
-          <li
-            className="py-4 px-5 w-full flex flex-col sm:grid sm:grid-cols-[min-content_40px_30%_1fr_1fr] items-center gap-x-5"
-            key={person.email}
-          >
-            <p>{i + 1}.&nbsp;</p>
-            <img alt="" className="h-10 w-10 rounded-full" src={person.image} />
-            <div>
-              <p className="text-sm mx-auto sm:m-0 w-fit font-medium text-blue-200">
-                {person.name}
-              </p>
-              <p className="text-sm text-blue-400">{person.email}</p>
-            </div>
-            <p className="mx-auto">Очки: {person.score}</p>
-            <button className="btn btn-primary w-1/2 sm:w-full sm:ml-auto">Like</button>
-          </li>
-        ))}
+      <h1 className="mb-2 text-4xl font-black text-center md:text-start">Лидеры</h1>
+
+      <ul className="flex my-4 text-center text-sm">
+        <li className="w-1/12 flex items-center justify-center">№</li>
+        <li className="w-4/12 flex items-center justify-center">Никнейм</li>
+        <li className="w-3/12 flex items-center justify-center">Счёт</li>
+        <li className="w-4/12 flex justify-center items-center">Поглощено объектов</li>
       </ul>
+      <ul>
+        {currectLeaders.map(({ data }, place) => {
+          return <LeadersListItem data={data} key={data.userID} place={place} />;
+        })}
+      </ul>
+
+      {/* Пагинация */}
+      <Pagination currentPage={currentPage} pages={pages} switchPages={setCurrentPage} />
     </section>
   );
 };
