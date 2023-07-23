@@ -10,6 +10,7 @@ import { createClientAndConnect } from './db';
 import { UserRepository } from './repositories/UserRepository';
 import { errorsHandler } from './src/middlewares/errorsMiddleWare';
 import router from './src/routes/router';
+import { initForums } from './src/utils/initForums';
 
 interface ISsrModule {
   render: (
@@ -80,6 +81,8 @@ const startServer = async () => {
   if (isProd) {
     app.use(express.static(spaBundleDistPath));
   }
+
+  await initForums();
 
   app.get('*', async (request, response, next) => {
     try {
