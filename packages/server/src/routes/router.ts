@@ -8,9 +8,9 @@ import { Routes } from './types';
 
 const router = Router();
 
-router.use('/local-api/' + Routes.Forum, forumRouter);
-router.use('/local-api/' + Routes.ForumTopics, topicsRouter);
-router.use('/local-api/' + Routes.Comments, commentsRouter);
-router.use('/local-api/' + Routes.Replies, repliesRouter);
+router.use('/api/' + Routes.Forum, forumRouter);
+router.use('/api/' + Routes.ForumTopics, topicsRouter);
+router.use('/api/' + Routes.Comments, commentsRouter);
+router.use('/api/' + Routes.Replies, repliesRouter);
 
 export default router;
