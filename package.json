@@ -5,6 +5,7 @@
     "bootstrap": "yarn && node init.js && lerna clean && yarn && lerna bootstrap",
     "build": "lerna run build",
     "check-types": "lerna run check-types --scope={client,server}",
+    "create-db": "echo \"bash /var/app/create-db.sh\" | docker exec -i blackhole-database bash;",
     "dev": "lerna run dev",
     "dev:client": "lerna run dev --scope=client",
     "dev:docker": "docker-compose --file ./compose.dev.yml up",
