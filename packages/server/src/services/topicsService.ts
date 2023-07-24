@@ -32,7 +32,7 @@ export class TopicService implements ITopicService {
       throw new NotFountError("Forum doesn't exist");
     }
 
-    const newTopic = await this._db.transaction(async (t) => {
+    const [newTopic, createdYaId] = await this._db.transaction(async (t) => {
       let existingAuthor: User | null = null;
 
       if (authorId) {
@@ -45,11 +45,12 @@ export class TopicService implements ITopicService {
         existingAuthor = author;
       }
 
-      if (yaId) {
+      if (yaId && !existingAuthor) {
         existingAuthor = await User.findOne({ where: { YaId: yaId } });
       }
 
-      if (authorName) {
+      if (authorName && !existingAuthor) {
+        console.log;
         existingAuthor = await User.create(
           {
             Avatar: avatar ?? null,
@@ -80,10 +81,15 @@ export class TopicService implements ITopicService {
       );
 
       await existingAuthor.update('Topics', [topic], { transaction: t });
-      return topic;
+      return [topic, existingAuthor.YaId];
     });
 
-    return { authorId: newTopic.UserId, commentsNumber: 0, topicName: newTopic.TopicName };
+    return {
+      authorId: newTopic.UserId,
+      commentsNumber: 0,
+      topicName: newTopic.TopicName,
+      authorYaId: createdYaId,
+    };
   }
 
   async getAllTopicsByForumId(id: number): Promise<TTopicDto[]> {
@@ -95,6 +101,7 @@ export class TopicService implements ITopicService {
           attributes: ['UserId', 'createdAt'],
           include: [{ model: Reply, attributes: ['UserId', 'createdAt'] }],
         },
+        { model: User, attributes: ['YaId'] },
       ],
     });
 
@@ -102,6 +109,7 @@ export class TopicService implements ITopicService {
       const lastMessage = this.getLastCommentOrReply(t);
       return {
         authorId: t.UserId,
+        authorYaId: t.User.YaId,
         commentsNumber: this.countComments(t),
         topicName: t.TopicName,
         lastMessageAuthor: lastMessage?.UserId ?? null,
