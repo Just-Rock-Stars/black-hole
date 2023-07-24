@@ -9,7 +9,7 @@ export const initForums = async () => {
   if (existingForums.length === 0) {
     await forumService.createForum({
       description:
-        'Зарегистрируйтесь на форуме сообщества Apex Legends для обсуждения информации об игре, кодов предзаказа, обновлений и списков изменений.',
+        'Обсуждение информации об игре, кодов предзаказа, обновлений и списков изменений.',
       name: 'Обсуждение игровых моментов',
     });
     await forumService.createForum({
