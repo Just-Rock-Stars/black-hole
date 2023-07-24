@@ -39,7 +39,6 @@ const startServer = async () => {
   }
 
   const app = express();
-  app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use(cors());
   const port = Number(process.env.SERVER_PORT) || 3001;
@@ -52,6 +51,7 @@ const startServer = async () => {
       target: 'https://ya-praktikum.tech',
     })
   );
+  app.use(express.json());
 
   let viteDevServer: ViteDevServer | undefined = undefined;
 
