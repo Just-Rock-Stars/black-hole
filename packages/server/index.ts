@@ -84,6 +84,8 @@ const startServer = async () => {
 
   await initForums();
 
+  app.use(router);
+
   app.get('*', async (request, response, next) => {
     try {
       let template = '';
@@ -126,8 +128,6 @@ const startServer = async () => {
       next(error);
     }
   });
-
-  app.use(router);
 
   app.listen(port, () => {
     console.log(`  ➜ 🎸 Server is listening on port: ${port}`);
