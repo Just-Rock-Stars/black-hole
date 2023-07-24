@@ -1,4 +1,5 @@
-import { FC, useState } from 'react';
+import axios from 'axios';
+import { FC, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { GAME_NAME } from '@constants';
@@ -6,33 +7,11 @@ import { GAME_NAME } from '@constants';
 import { IThemeTypes } from './types';
 
 export const ForumList: FC = () => {
-  const testList = [
-    {
-      title: 'Обсуждение игровых моментов',
-      description:
-        'Зарегистрируйтесь на форуме сообщества Apex Legends для обсуждения информации об игре, кодов предзаказа, обновлений и списков изменений.',
-      countOfTopics: 2358,
-      countOfAnswers: 18649,
-      id: '2wtqosme50',
-    },
-    {
-      title: 'Технические вопросы',
-      description:
-        'Проблема с активацией кода или подключением? Низкая производительность? Сбой, зависание или ошибка? Ищите решения проблем в нашем сообществе.',
-      countOfTopics: 8114,
-      countOfAnswers: 34412,
-      id: 'uv2da0x5fz',
-    },
-    {
-      title: 'Сообщения об ошибках',
-      description: 'Рассказывайте об ошибках, чтобы получить помощь сообщества.',
-      countOfTopics: 2341,
-      countOfAnswers: 7808,
-      id: '95pkt1q2iy',
-    },
-  ];
+  const [theme, setTheme] = useState<IThemeTypes[]>([]);
 
-  const [theme] = useState<IThemeTypes[]>(testList);
+  useEffect(() => {
+    axios.get('http://localhost:3001/api/forums').then((res) => setTheme(res.data));
+  }, []);
 
   return (
     <main className="page-container overlay my-6">
@@ -44,22 +23,22 @@ export const ForumList: FC = () => {
           <div className="w-1/12 text-center">ответы</div>
         </div>
         <div>
-          {theme.map(({ title, description, countOfTopics, countOfAnswers, id }) => {
+          {theme.map(({ name, description, topicsNumber, commentsNumber, id }) => {
             return (
               <div className="odd:bg-white/20 rounded-xl px-2" key={id}>
                 <Link to={`/forum/${id}/topics`}>
                   <div className="py-3 flex cursor-pointer">
                     <div className="w-10/12">
                       <div className="text-blue-500 font-black text-2xl hover:underline">
-                        {title}
+                        {name}
                       </div>
                       <div className="forum-item-discribe h-12">{description}</div>
                     </div>
                     <div className="w-1/12 flex justify-center items-center font-bold">
-                      {countOfTopics}
+                      {topicsNumber}
                     </div>
                     <div className="w-1/12 flex justify-center items-center font-bold">
-                      {countOfAnswers}
+                      {commentsNumber}
                     </div>
                   </div>
                 </Link>
