@@ -8,6 +8,9 @@ import { ViteDevServer, createServer as createViteServer } from 'vite';
 
 import { createClientAndConnect } from './db';
 import { UserRepository } from './repositories/UserRepository';
+import { errorsHandler } from './src/middlewares/errorsMiddleWare';
+import router from './src/routes/router';
+import { initForums } from './src/utils/initForums';
 
 interface ISsrModule {
   render: (
@@ -30,14 +33,16 @@ const clientPackageDirPath = path.dirname(require.resolve('client/package.json')
 const spaBundleDistPath = path.resolve(clientPackageDirPath, 'dist');
 
 const startServer = async () => {
-  const app = express();
-  app.use(cors());
-  const port = Number(process.env.SERVER_PORT) || 3001;
-
   const client = await createClientAndConnect();
   if (client === null) {
     throw new Error('Database connection failed. Cannot start server.');
   }
+
+  const app = express();
+  app.use(express.urlencoded({ extended: false }));
+  app.use(cors());
+  const port = Number(process.env.SERVER_PORT) || 3001;
+
   app.use(
     '/api/v2',
     createProxyMiddleware({
@@ -46,6 +51,7 @@ const startServer = async () => {
       target: 'https://ya-praktikum.tech',
     })
   );
+  app.use(express.json());
 
   let viteDevServer: ViteDevServer | undefined = undefined;
 
@@ -72,13 +78,13 @@ const startServer = async () => {
     app.use(viteDevServer.middlewares);
   }
 
-  app.get('/api', (request, response) => {
-    response.json('👋 Howdy from the server :)');
-  });
-
   if (isProd) {
     app.use(express.static(spaBundleDistPath));
   }
+
+  await initForums();
+
+  app.use(router);
 
   app.get('*', async (request, response, next) => {
     try {
@@ -126,6 +132,8 @@ const startServer = async () => {
   app.listen(port, () => {
     console.log(`  ➜ 🎸 Server is listening on port: ${port}`);
   });
+
+  app.use(errorsHandler);
 };
 
 startServer();

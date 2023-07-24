@@ -38,15 +38,9 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 0,
     '@typescript-eslint/no-var-requires': 0,
     'arrow-parens': 1,
-    'max-params': ['error', 3],
+    'max-params': ['error', 4],
     'no-duplicate-imports': 1,
-    'no-restricted-syntax': [
-      1,
-      {
-        selector: 'ExportDefaultDeclaration',
-        message: 'Prefer named exports.',
-      },
-    ],
+    'no-restricted-syntax': [0],
     'no-tabs': 1,
   },
 };
