@@ -7,7 +7,7 @@ import { Reply } from '../Models/Reply';
 import { User } from '../Models/User';
 import { TCreateTopicDto } from '../dtos/createTopicDto';
 import { TTopicDto } from '../dtos/topicDto';
-import { BadRequest, NotFountError } from '../middlewares/errors';
+import { NotFountError } from '../middlewares/errors';
 
 export interface ITopicService {
   createTopic(dto: TCreateTopicDto): Promise<TTopicDto>;
@@ -43,28 +43,24 @@ export class TopicService implements ITopicService {
         }
 
         existingAuthor = author;
-      } else {
-        if (yaId) {
-          existingAuthor = await User.findOne({ where: { YaId: yaId } });
-        }
+      }
 
-        if (!authorName && !existingAuthor) {
-          throw new BadRequest("You didn't provide author");
-        }
+      if (yaId) {
+        existingAuthor = await User.findOne({ where: { YaId: yaId } });
+      }
 
-        if (authorName) {
-          existingAuthor = await User.create(
-            {
-              Avatar: avatar ?? null,
-              Comments: [],
-              Name: authorName,
-              Replies: [],
-              Topics: [],
-              YaId: yaId,
-            },
-            { transaction: t }
-          );
-        }
+      if (authorName) {
+        existingAuthor = await User.create(
+          {
+            Avatar: avatar ?? null,
+            Comments: [],
+            Name: authorName,
+            Replies: [],
+            Topics: [],
+            YaId: yaId,
+          },
+          { transaction: t }
+        );
       }
 
       if (!existingAuthor) {
