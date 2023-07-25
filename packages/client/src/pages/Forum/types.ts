@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from 'react';
 
 export interface INewTopicProps {
   setIsNewTopicOpen: Dispatch<SetStateAction<boolean>>;
-  idTopicList: string;
+  idTopicList: string | undefined;
 }
 
 export interface IMessagesTypes {
@@ -26,4 +26,21 @@ export interface IThemeTypes {
   topicsNumber: number;
   commentsNumber: number;
   id: string;
+}
+
+export interface ITopicItemProps {
+  data: {
+    topicName: string;
+    commentsNumber: number;
+    authorId: number;
+    lastMessageAuthor: string;
+    lastMessageDate: string;
+  };
+  idTopicList: string | undefined;
+}
+
+export interface IUserData {
+  avatar: string;
+  display_name: string;
+  first_name: string;
 }

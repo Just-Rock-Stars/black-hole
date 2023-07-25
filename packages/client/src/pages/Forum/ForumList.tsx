@@ -1,16 +1,41 @@
-import axios from 'axios';
 import { FC, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+
+import { forumApi } from '@api/forumApi';
 
 import { GAME_NAME } from '@constants';
 
 import { IThemeTypes } from './types';
 
 export const ForumList: FC = () => {
+  const mock = [
+    {
+      commentsNumber: 0,
+      creationDate: '2023-07-23T12:34:56.715Z',
+      description:
+        'Зарегистрируйтесь на форуме сообщества Apex Legends для обсуждения информации об игре, кодов предзаказа, обновлений и списков изменений.',
+      id: 1,
+      name: 'Обсуждение игровых моментов',
+      topicsNumber: 4,
+    },
+    {
+      commentsNumber: 0,
+      creationDate: '2023-07-23T12:34:56.850Z',
+      description:
+        'Проблема с активацией кода или подключением? Низкая производительность? Сбой, зависание или ошибка? Ищите решения проблем в нашем сообществе.',
+      id: 2,
+      name: 'Технические вопросы',
+      topicsNumber: 2,
+    },
+  ];
+
   const [theme, setTheme] = useState<IThemeTypes[]>([]);
 
   useEffect(() => {
-    axios.get('http://localhost:3001/api/forums').then((res) => setTheme(res.data));
+    forumApi
+      .getAllForums()
+      .then((forumsList) => setTheme(forumsList.data))
+      .catch((e) => console.log(e));
   }, []);
 
   return (

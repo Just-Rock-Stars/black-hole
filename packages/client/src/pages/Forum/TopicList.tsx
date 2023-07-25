@@ -1,26 +1,70 @@
-import axios from 'axios';
 import { FC, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
+import { forumApi } from '@api/forumApi';
+
 import { NewTopic } from './components/NewTopic';
+import { TopicItem } from './components/TopicItem';
 import { ITopicTypes } from './types';
 
 export const TopicList: FC = () => {
-  const { idTopicList } = useParams();
+  const mock = [
+    {
+      authorId: 3,
+      authorYaId: 9454,
+      commentsNumber: 0,
+      topicName: 'Ahikyoshi',
+      lastMessageAuthor: null,
+      lastMessageDate: null,
+    },
+    {
+      authorId: 2,
+      authorYaId: 9454,
+      commentsNumber: 0,
+      topicName: 'Ahikyoshi',
+      lastMessageAuthor: null,
+      lastMessageDate: null,
+    },
+    {
+      authorId: 4,
+      authorYaId: 9454,
+      commentsNumber: 0,
+      topicName: 'Ahikyoshi',
+      lastMessageAuthor: null,
+      lastMessageDate: null,
+    },
+    {
+      authorId: 1,
+      authorYaId: 9454,
+      commentsNumber: 0,
+      topicName: 'Ahikyoshi',
+      lastMessageAuthor: null,
+      lastMessageDate: null,
+    },
+  ];
+
+  const { idTopicList } = useParams<string>();
+
   const [topics, setTopics] = useState<ITopicTypes[]>([]);
-  const [isNewTopicOpen, setIsNewTopicOpen] = useState(false);
+  const [isNewTopicOpen, setIsNewTopicOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:3001/api/forumTopics?forumId=${idTopicList}`)
-      .then((res) => setTopics(res.data));
+    if (idTopicList != undefined) {
+      forumApi
+        .getAllTopics(idTopicList)
+        .then((topicsList) => setTopics(topicsList.data))
+        .catch((e) => console.log(e));
+    }
   }, [idTopicList]);
 
   return (
     <>
       <div className="font-mono overlay page-container my-6">
         <div className="w-full py-2 flex">
-          <h1 className="w-10/12 text-3xl">Раздел: (название раздела)</h1>
+          <h1 className="w-10/12 text-3xl">
+            Раздел:
+            {idTopicList === '1' ? 'Обсуждение игровых моментов' : 'Технические вопросы'}
+          </h1>
           <button className="w-2/12 btn-primary" onClick={() => setIsNewTopicOpen(true)}>
             Создать новую тему
           </button>
@@ -30,42 +74,13 @@ export const TopicList: FC = () => {
           <div className="w-4/12 text-center">ответы</div>
           <div className="w-2/12">последняя публикация</div>
         </nav>
-        {topics.map(
-          ({ topicName, commentsNumber, authorId, lastMessageAuthor, lastMessageDate }) => {
-            return (
-              <div className="flex cursor-pointer odd:bg-white/20 rounded-xl px-2" key={authorId}>
-                <div className="w-1/12">
-                  <img
-                    alt="Author_Icon"
-                    className="h-24"
-                    src="https://api.mozambiquehe.re/assets/ranks/gold1.png"
-                  />
-                </div>
-                <div className="w-5/12">
-                  <Link to={`/forum/${idTopicList}/topics/${authorId}`}>
-                    <div className="text-lg font-bold hover:underline">{topicName}</div>
-                  </Link>
-                  <div className="text-xs mt-4 flex ">
-                    <div>Автор:</div>
-                    <div className="font-bold text-blue-400">{authorId}</div>
-                  </div>
-                </div>
-                <div className="w-4/12 flex items-center justify-center text-2xl font-bold">
-                  {commentsNumber}
-                </div>
-                <div className="w-2/12 flex flex-col justify-center">
-                  <div>Новое:</div>
-                  <div className="text-blue-400">{lastMessageDate}</div>
-                  <div>{lastMessageAuthor}</div>
-                </div>
-              </div>
-            );
-          }
-        )}
+        {topics.map((topicData) => {
+          return <TopicItem data={topicData} idTopicList={idTopicList} key={idTopicList} />;
+        })}
       </div>
-      {/* {isNewTopicOpen && (
-        <NewTopic setIsNewTopicOpen={setIsNewTopicOpen} idTopicList={idTopicList} />
-      )} */}
+      {isNewTopicOpen && (
+        <NewTopic idTopicList={idTopicList} setIsNewTopicOpen={setIsNewTopicOpen} />
+      )}
     </>
   );
 };
