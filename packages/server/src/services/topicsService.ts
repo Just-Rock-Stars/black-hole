@@ -88,6 +88,7 @@ export class TopicService implements ITopicService {
 
     return {
       authorId: newTopic.UserId,
+      topicId: newTopic.id,
       commentsNumber: 0,
       topicName: newTopic.TopicName,
       authorYaId: createdYaId,
@@ -121,6 +122,7 @@ export class TopicService implements ITopicService {
       return {
         authorId: t.UserId,
         authorYaId: t.User.YaId,
+        topicId: t.id,
         commentsNumber: this.countComments(t),
         topicName: t.TopicName,
         lastMessageAuthor: lastMessage?.UserId ?? null,
