@@ -3,4 +3,5 @@ export enum Routes {
   ForumTopics = 'forumTopics',
   Comments = 'comments',
   Replies = 'replies',
+  Reaction = 'reaction',
 }

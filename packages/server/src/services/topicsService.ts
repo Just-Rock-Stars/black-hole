@@ -3,6 +3,7 @@ import { Sequelize } from 'sequelize';
 import { Comment } from '../Models/Comment';
 import { Forum } from '../Models/Forum';
 import { ForumTopic } from '../Models/ForumTopic';
+import { Reaction } from '../Models/Reaction';
 import { Reply } from '../Models/Reply';
 import { User } from '../Models/User';
 import { TCreateTopicDto } from '../dtos/createTopicDto';
@@ -50,7 +51,7 @@ export class TopicService implements ITopicService {
       }
 
       if (authorName && !existingAuthor) {
-        console.log;
+        // console.log;
         existingAuthor = await User.create(
           {
             Avatar: avatar ?? null,
@@ -76,6 +77,7 @@ export class TopicService implements ITopicService {
           Forum: forum,
           ForumId: forum.id,
           TopicName: name,
+          Reactions: [],
         },
         { transaction: t }
       );
@@ -89,6 +91,7 @@ export class TopicService implements ITopicService {
       commentsNumber: 0,
       topicName: newTopic.TopicName,
       authorYaId: createdYaId,
+      reactions: [],
     };
   }
 
@@ -100,6 +103,14 @@ export class TopicService implements ITopicService {
           model: Comment,
           attributes: ['UserId', 'createdAt'],
           include: [{ model: Reply, attributes: ['UserId', 'createdAt'] }],
+        },
+        // {
+        //   model: Reaction,
+        //   attributes: ['UserId', 'Type'],
+        // },
+        {
+          model: Reaction,
+          attributes: ['Type', 'UserId', 'TopicId'],
         },
         { model: User, attributes: ['YaId'] },
       ],
@@ -114,6 +125,12 @@ export class TopicService implements ITopicService {
         topicName: t.TopicName,
         lastMessageAuthor: lastMessage?.UserId ?? null,
         lastMessageDate: lastMessage?.createdAt ?? null,
+        reactions:
+          t.Reactions?.map((x) => ({
+            type: x.Type,
+            userId: x.UserId,
+            topicId: x.TopicId,
+          })) ?? [],
       };
     });
   }

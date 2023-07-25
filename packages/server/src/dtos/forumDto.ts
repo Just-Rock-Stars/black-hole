@@ -5,4 +5,5 @@ export type TForumDto = {
   creationDate: Date;
   topicsNumber: number;
   commentsNumber: number;
+  reactions?: any;
 };
