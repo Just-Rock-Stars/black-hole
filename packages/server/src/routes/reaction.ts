@@ -8,7 +8,5 @@ export const reactionRouter = Router();
 
 const controller = new ReactionController(new ReactionService(sequelize));
 
-// forumRouter.post('/', controller.create);
 reactionRouter.post('/', controller.create);
-reactionRouter.get('/', controller.getAll);
-// forumRouter.delete('/', controller.removeReaction);
+reactionRouter.get('/', controller.getReactionByTopicId);

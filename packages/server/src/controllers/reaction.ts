@@ -6,7 +6,7 @@ import { IReactionService } from '../services/reactionService';
 
 export interface IReactionController {
   create: RequestHandler<void, TReactionDto, TCreateReactionDto>;
-  getAll: RequestHandler<void, TReactionDto[], void, { topicId: number }>;
+  getReactionByTopicId: RequestHandler<void, TReactionDto[], void, { topicId: number }>;
 }
 
 export class ReactionController implements IReactionController {
@@ -21,7 +21,7 @@ export class ReactionController implements IReactionController {
     }
   };
 
-  getAll: RequestHandler<void, TReactionDto[], void, { topicId: number }> = async (
+  getReactionByTopicId: RequestHandler<void, TReactionDto[], void, { topicId: number }> = async (
     req,
     res,
     next

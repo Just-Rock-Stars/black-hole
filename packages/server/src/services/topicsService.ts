@@ -51,7 +51,6 @@ export class TopicService implements ITopicService {
       }
 
       if (authorName && !existingAuthor) {
-        // console.log;
         existingAuthor = await User.create(
           {
             Avatar: avatar ?? null,
@@ -105,10 +104,6 @@ export class TopicService implements ITopicService {
           attributes: ['UserId', 'createdAt'],
           include: [{ model: Reply, attributes: ['UserId', 'createdAt'] }],
         },
-        // {
-        //   model: Reaction,
-        //   attributes: ['UserId', 'Type'],
-        // },
         {
           model: Reaction,
           attributes: ['Type', 'UserId', 'TopicId'],

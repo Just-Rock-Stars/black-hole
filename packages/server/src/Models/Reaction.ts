@@ -9,6 +9,13 @@ export class Reaction extends Model<InferAttributes<Reaction>, InferCreationAttr
     @AllowNull(false)
     @Column(DataType.STRING)
     declare Type: string
+
+    @AllowNull(false)
+    @Column(DataType.DATE)
+    declare createdAt: Date;
+
+    @BelongsTo(() => User)
+    declare User: User
     
     @ForeignKey(() => User)
     @Column

@@ -1,3 +1,5 @@
+import { TReactionDto } from './reactionDTO';
+
 export type TForumDto = {
   id: number;
   name: string;
@@ -5,5 +7,5 @@ export type TForumDto = {
   creationDate: Date;
   topicsNumber: number;
   commentsNumber: number;
-  reactions?: any;
+  reactions?: TReactionDto[];
 };
