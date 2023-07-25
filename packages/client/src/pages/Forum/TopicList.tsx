@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import { forumApi } from '@api/forumApi';
 
@@ -8,41 +8,6 @@ import { TopicItem } from './components/TopicItem';
 import { ITopicTypes } from './types';
 
 export const TopicList: FC = () => {
-  const mock = [
-    {
-      authorId: 3,
-      authorYaId: 9454,
-      commentsNumber: 0,
-      topicName: 'Ahikyoshi',
-      lastMessageAuthor: null,
-      lastMessageDate: null,
-    },
-    {
-      authorId: 2,
-      authorYaId: 9454,
-      commentsNumber: 0,
-      topicName: 'Ahikyoshi',
-      lastMessageAuthor: null,
-      lastMessageDate: null,
-    },
-    {
-      authorId: 4,
-      authorYaId: 9454,
-      commentsNumber: 0,
-      topicName: 'Ahikyoshi',
-      lastMessageAuthor: null,
-      lastMessageDate: null,
-    },
-    {
-      authorId: 1,
-      authorYaId: 9454,
-      commentsNumber: 0,
-      topicName: 'Ahikyoshi',
-      lastMessageAuthor: null,
-      lastMessageDate: null,
-    },
-  ];
-
   const { idTopicList } = useParams<string>();
 
   const [topics, setTopics] = useState<ITopicTypes[]>([]);
@@ -59,21 +24,29 @@ export const TopicList: FC = () => {
 
   return (
     <>
-      <div className="font-mono overlay page-container my-6">
-        <div className="w-full py-2 flex">
-          <h1 className="w-10/12 text-3xl">
-            Раздел:
-            {idTopicList === '1' ? 'Обсуждение игровых моментов' : 'Технические вопросы'}
+      <div className="my-6 font-black overlay page-container">
+        <div className="w-full py-3 flex justify-between items-center">
+          <h1 className="w-8/12 text-2xl md:text-4xl">
+            Раздел
+            <div className="mt-2 font-normal text-sm md:text-xl md:mt-1">
+              {idTopicList === '1' ? 'Обсуждение игровых моментов' : 'Технические вопросы'}
+            </div>
           </h1>
-          <button className="w-2/12 btn-primary" onClick={() => setIsNewTopicOpen(true)}>
-            Создать новую тему
+
+          <button
+            className="w-4/12 h-9 bg-blue-500 font-thin text-sm rounded-sm md:max-w-max md:px-2"
+            onClick={() => setIsNewTopicOpen(true)}
+          >
+            Задать вопрос
           </button>
         </div>
-        <nav className="flex text-base px-2 py-2 font-bold uppercase">
-          <div className="w-6/12 text-center">тема</div>
+
+        <nav className="py-2 text-xs uppercase flex items-center md:text-base">
+          <div className="w-4/12 text-center">тема</div>
           <div className="w-4/12 text-center">ответы</div>
-          <div className="w-2/12">последняя публикация</div>
+          <div className="w-4/12">последняя публикация</div>
         </nav>
+
         {topics.map((topicData) => {
           return <TopicItem data={topicData} idTopicList={idTopicList} key={idTopicList} />;
         })}

@@ -18,6 +18,7 @@ export interface ITopicTypes {
   commentsNumber: number;
   lastMessageAuthor: string;
   lastMessageDate: string;
+  topicId: string;
 }
 
 export interface IThemeTypes {
@@ -35,6 +36,7 @@ export interface ITopicItemProps {
     authorId: number;
     lastMessageAuthor: string;
     lastMessageDate: string;
+    topicId: string;
   };
   idTopicList: string | undefined;
 }

@@ -28,17 +28,17 @@ export const NewTopic: FC<INewTopicProps> = ({ setIsNewTopicOpen, idTopicList })
   };
 
   return (
-    <div className="w-full h-full absolute top-0 left-0 bg-white flex flex-col items-center justify-center">
-      <div className=" text-3xl text-center mb-5">Создание нового топика</div>
+    <div className="w-full h-screen bg-black/10 flex flex-col items-center justify-center absolute top-0 left-0 overlay">
+      <div className="mb-5 text-3xl text-center">Создание нового топика</div>
+
       <input
-        className="w-1/2 h-9 border border-slate-300 rounded indent-1 mb-3"
-        id="newTopicInput"
+        className="w-full h-11 mb-3 indent-1 border border-slate-300 rounded md:w-80"
         onChange={(e) => setInputValue(e.target.value)}
         placeholder="Опишите вашу проблему"
         type="text"
         value={inputValue}
       />
-      <button className="w-1/2 h-11 btn-primary" onClick={() => publicNewTopic()}>
+      <button className="w-full h-11 btn-primary md:w-80" onClick={() => publicNewTopic()}>
         Создать
       </button>
       <div
