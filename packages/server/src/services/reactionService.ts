@@ -5,17 +5,24 @@ import { Reaction } from '../Models/Reaction';
 import { User } from '../Models/User';
 import { TCreateReactionDto } from '../dtos/createReactionDto';
 import { TReactionDto } from '../dtos/reactionDTO';
+import { TUserDto } from '../dtos/userDto';
 import { NotFountError } from '../middlewares/errors';
 
 export interface IReactionService {
-  createReaction(dto: TCreateReactionDto): Promise<TReactionDto>;
+  createReaction(dto: TCreateReactionDto, user?: TUserDto): Promise<TReactionDto>;
 
-  getReactionByTopicId(id: number): Promise<TReactionDto[]>;
+  getReactionByTopicId(id: number, user?: TUserDto): Promise<TReactionDto[]>;
 }
 
 export class ReactionService implements IReactionService {
   constructor(private _db: Sequelize) {}
-  public async createReaction({ type, userId, topicId }: TCreateReactionDto) {
+
+  public async createReaction({ type, userId, topicId }: TCreateReactionDto, user: TUserDto) {
+    console.log(user);
+    if (!user) {
+      throw new NotFountError('Вы не авторизованы!!!');
+    }
+
     const topic = await ForumTopic.findByPk(topicId);
 
     if (!type) {
@@ -26,9 +33,9 @@ export class ReactionService implements IReactionService {
       throw new NotFountError("Topic doesn't exist");
     }
 
-    const user = await User.findByPk(userId);
+    const foundUser = await User.findByPk(userId);
 
-    if (user === null) {
+    if (foundUser === null) {
       throw new NotFountError("User doesn't exist");
     }
 
@@ -66,7 +73,7 @@ export class ReactionService implements IReactionService {
         await Reaction.update(
           {
             Type: type,
-            User: user,
+            User: foundUser,
             UserId: userId,
             ForumTopic: topic,
             TopicId: topic.id,
@@ -81,7 +88,7 @@ export class ReactionService implements IReactionService {
       return await Reaction.create(
         {
           Type: type,
-          User: user,
+          User: foundUser,
           UserId: userId,
           ForumTopic: topic,
           TopicId: topic.id,
@@ -100,8 +107,21 @@ export class ReactionService implements IReactionService {
           topicId: result.TopicId,
         };
   }
+  // public async getReactionByTopicId({ user, topicId }: TCreateReactionDto) {
 
-  getReactionByTopicId: (topicId: number) => Promise<TReactionDto[]> = async (topicId) => {
+  getReactionByTopicId: (topicId: number, user?: TUserDto) => Promise<TReactionDto[]> = async (
+    topicId,
+    user
+  ) => {
+    console.log('user:', user);
+    console.log('topicId:', topicId);
+    if (!user) {
+      throw new NotFountError('Вы не авторизованы!!!');
+    }
+    if (!topicId) {
+      throw new NotFountError("Params 'topicId' is not set");
+    }
+
     const topic = await ForumTopic.findByPk(topicId);
 
     if (!topic) {
