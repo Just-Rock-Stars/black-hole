@@ -38,23 +38,29 @@ export class CommentsService implements ICommentsServices {
     if (topic === null) {
       throw new NotFountError("Topic doesn't exist");
     }
+
+    if (!author && authorYaId) {
+      author = await User.findOne({ where: { YaId: authorYaId } });
+    }
     const comment = await this._db.transaction(async (t) => {
       if (!author) {
         if (!authorYaId || !authorName) {
           throw new BadRequest('Please provide author id or user name and yandex id');
         }
 
-        author = await User.create(
-          {
-            Comments: [],
-            Name: authorName,
-            Replies: [],
-            Topics: [],
-            YaId: authorYaId,
-            Avatar: authorAvatar,
-          },
-          { transaction: t }
-        );
+        if (!author) {
+          author = await User.create(
+            {
+              Comments: [],
+              Name: authorName,
+              Replies: [],
+              Topics: [],
+              YaId: authorYaId,
+              Avatar: authorAvatar,
+            },
+            { transaction: t }
+          );
+        }
       }
 
       const creationDate = new Date();
@@ -79,6 +85,7 @@ export class CommentsService implements ICommentsServices {
     }
 
     return {
+      id: comment.id,
       authorId: comment.UserId,
       text: comment.Text,
       authorName: author.Name,
@@ -105,6 +112,7 @@ export class CommentsService implements ICommentsServices {
     }
 
     return topic.Comments.map((x) => ({
+      id: x.id,
       authorId: x.UserId,
       text: x.Text,
       authorName: x.User.Name,
