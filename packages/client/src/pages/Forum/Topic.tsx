@@ -7,52 +7,23 @@ import { MaximizableView } from '@components/MaximizableView';
 import { IMessagesTypes } from './types';
 
 export const Topic: FC = () => {
-  const testTopic = [
-    {
-      author: 'BlackWood',
-      content: 'Добрый день, не могу поиграть в вашу игру',
-      time: '20 минут назад',
-      id: 'm0wk9nsf7t',
-    },
-    {
-      author: 'Техническая поддержка',
-      content: 'Добрый день, могли бы вы детальнее описать проблему с которой вы столкнулись?',
-      time: '24 минут назад',
-      id: '4llr2faznt',
-    },
-    {
-      author: 'BlackWood',
-      content: 'Да, я пытаюсь управлять персонажем, но он остаеться на месте.',
-      time: '30 минут назад',
-      id: '8pihhs0vg8',
-    },
-    {
-      author: 'Техническая поддержка',
-      content: 'Управление персонажем, производится с помощью нажатия на стрелочки.',
-      time: '32 минут назад',
-      id: 'vnqsvgfmce',
-    },
-    {
-      author: 'BlackWood',
-      content: 'Спасибо большое, теперь я могу играть',
-      time: '40 минут назад',
-      id: 'jzjasy5mfw',
-    },
-    {
-      author: 'Техническая поддержка',
-      content: 'В случае возникновения новых проблем обращайтесь!',
-      time: '42 минут назад',
-      id: '4lyatdbkyi',
-    },
-  ];
-
   const [comments, setCommets] = useState([]);
-
+  const [comment, setComment] = useState('');
   useEffect(() => {
     axios.get('http://localhost:3001/api/comments?topicId=34').then((res) => setCommets(res.data));
   }, []);
 
   useEffect(() => {}, [comments]);
+
+  const sendCommet = () => {
+    axios.post('http://localhost:3001/api/comments?topicId=34', {
+      text: comment,
+      topicId: 34,
+      authorName: 'Ahikyoshi',
+      authorAvatar: '1212',
+      authorYaId: 9454,
+    });
+  };
 
   return (
     <div className="font-mono overlay page-container my-6">
@@ -99,15 +70,15 @@ export const Topic: FC = () => {
         </div>
         <form className="flex flex-col p-2">
           <div className="text-2xl mb-2">Добавить сообщение</div>
-          {/* <textarea
+          <textarea
             className=" w-1/2 h-32 border border-slate-300 rounded indent-1 mb-3 resize-none"
             id="comment"
             name="comment"
             onChange={(e) => setComment(e.target.value)}
             placeholder="Ваш комментарий"
             value={comment}
-          /> */}
-          <button className="btn-primary w-1/4" type="submit">
+          />
+          <button className="btn-primary w-1/4" onClick={() => sendCommet()} type="submit">
             Отправить
           </button>
         </form>
