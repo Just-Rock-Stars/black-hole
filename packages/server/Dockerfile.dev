@@ -7,6 +7,6 @@ RUN yarn install
 RUN yarn link --cwd ./packages/client
 RUN yarn link "client" --cwd ./packages/server
 
-EXPOSE 3001
+EXPOSE 3000
 EXPOSE 24678
 CMD yarn dev:server
