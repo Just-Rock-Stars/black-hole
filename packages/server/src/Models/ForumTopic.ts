@@ -3,6 +3,7 @@ import { AllowNull, BelongsTo, Column, DataType, ForeignKey, HasMany, Model, Tab
 import { Comment } from './Comment';
 import { Forum } from './Forum';
 import { User } from './User';
+import { Reaction } from './Reaction';
 
 @Table
 export class ForumTopic extends Model<InferAttributes<ForumTopic>, InferCreationAttributes<ForumTopic>> {
@@ -12,6 +13,9 @@ export class ForumTopic extends Model<InferAttributes<ForumTopic>, InferCreation
     
     @HasMany(() => Comment, {onDelete: 'CASCADE'})
     declare Comments: Comment[]
+
+    @HasMany(() => Reaction, {onDelete: 'CASCADE'})
+    declare Reactions: Reaction[]
     
     @ForeignKey(() => Forum)
     @Column
