@@ -35,13 +35,15 @@ export const Topic: FC = () => {
 
     if (!params.idTopic) return;
 
-    forumApi.sendCommet(params.idTopic, {
-      text: comment,
-      topicId: Number(params.idTopic),
-      authorName: user.dispay_name,
-      authorAvatar: user.avatar,
-      authorYaId: user.id,
-    });
+    forumApi
+      .sendCommet(params.idTopic, {
+        text: comment,
+        topicId: Number(params.idTopic),
+        authorName: user.dispay_name,
+        authorAvatar: user.avatar,
+        authorYaId: user.id,
+      })
+      .then(() => setComment(''));
 
     setDidUpdate((prev) => {
       return !prev;
