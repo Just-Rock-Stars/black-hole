@@ -1,11 +1,11 @@
-import axios from 'axios';
 import { FC, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
+import { forumApi } from '@api/forumApi';
+
 import { MaximizableView } from '@components/MaximizableView';
 
-import { CommentInTopic } from './Comment';
-import { IMessagesTypes } from './types';
+import { CommentInTopic } from './components/Comment';
 
 export const Topic: FC = () => {
   const [comments, setCommets] = useState([]);
@@ -16,12 +16,10 @@ export const Topic: FC = () => {
   const params = useParams();
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:3001/api/comments?topicId=${params.idTopic}`)
-      .then((res) => setCommets(res.data));
+    if (params.idTopic != undefined) {
+      forumApi.getTopicComments(params.idTopic).then((res) => setCommets(res.data));
+    }
   }, [didUpdate, params.idTopic]);
-
-  useEffect(() => {}, [comments]);
 
   const sendCommet = () => {
     const userData = localStorage.getItem('user');
@@ -30,25 +28,25 @@ export const Topic: FC = () => {
 
     const user = JSON.parse(userData);
 
-    axios
-      .post(`http://localhost:3001/api/comments?topicId=${params.idTopic}`, {
-        text: comment,
-        topicId: Number(params.idTopic),
-        authorName: user.dispay_name,
-        authorAvatar: user.avatar,
-        authorYaId: user.id,
-      })
-      .then(() =>
-        setDidUpdate((prev) => {
-          return !prev;
-        })
-      );
+    if (!params.idTopic) return;
+
+    forumApi.sendCommet(params.idTopic, {
+      text: comment,
+      topicId: Number(params.idTopic),
+      authorName: user.dispay_name,
+      authorAvatar: user.avatar,
+      authorYaId: user.id,
+    });
+
+    setDidUpdate((prev) => {
+      return !prev;
+    });
   };
 
   return (
     <div className="font-mono overlay page-container my-6">
       <div className="flex justify-between">
-        <Link to={'/forum/2wtqosme50/topics'}>
+        <Link to={'/forum'}>
           <div className="hover:underline hover:cursor-pointer" onClick={window.history.back}>
             &larr; Обратно к темам
           </div>
@@ -64,7 +62,7 @@ export const Topic: FC = () => {
         <div className="flex flex-col p-2">
           <div className="text-2xl mb-2">Добавить сообщение</div>
           <textarea
-            className=" w-1/2 h-32 border border-slate-300 rounded indent-1 mb-3 resize-none"
+            className="text-black w-1/2 h-32 border border-slate-300 rounded indent-1 mb-3 resize-none"
             id="comment"
             name="comment"
             onChange={(e) => setComment(e.target.value)}

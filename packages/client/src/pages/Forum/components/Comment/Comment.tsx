@@ -1,28 +1,16 @@
-import axios from 'axios';
 import { FC, useEffect, useState } from 'react';
 
-import { authApi } from '@api/authApi';
+import { forumApi } from '@api/forumApi';
 
 import { randomAvatarPath } from '@utils/randomAvatarPath';
 
-interface IComment {
-  comment: {
-    text: string;
-    yaId: string;
-  };
-  index: number;
-}
-
-interface IUser {
-  avatar: string;
-  first_name: string;
-}
+import { IComment, IUser } from './types';
 
 export const CommentInTopic: FC<IComment> = ({ comment: { text, yaId }, index }) => {
   const [userData, setUserData] = useState<IUser>({ avatar: '', first_name: '' });
 
   useEffect(() => {
-    axios.get(`ya-praktikum.tech/api/v2/user/${yaId}`).then((res) => setUserData(res.data));
+    forumApi.getAuthorComment(yaId).then((res) => setUserData(res.data));
   }, [yaId]);
 
   return (
@@ -32,11 +20,7 @@ export const CommentInTopic: FC<IComment> = ({ comment: { text, yaId }, index })
       </div>
       <div className="flex">
         <div className="flex flex-col items-center justify-center w-2/12">
-          <img
-            alt="User_Avatar"
-            className="h-24"
-            src={userData.avatar != null ? userData.avatar : randomAvatarPath}
-          />
+          <img alt="User_Avatar" className="h-24" src={userData.avatar ?? randomAvatarPath} />
           <div className="text-sm font-bold">{userData.first_name}</div>
         </div>
         <div className="w-8/12">{text}</div>

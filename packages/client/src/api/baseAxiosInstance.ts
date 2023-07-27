@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-import { API_BASE_URL, API_FORUM_URL } from '@constants';
+import { API_BASE_URL, CUSTOM_API_BASE_URL } from '@constants';
 
 export const forumAxiosInstance = axios.create({
-  baseURL: API_FORUM_URL,
+  baseURL: CUSTOM_API_BASE_URL,
   withCredentials: true,
 });
 

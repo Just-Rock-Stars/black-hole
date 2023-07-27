@@ -7,7 +7,7 @@ import { INewTopicProps } from '../../types';
 export const NewTopic: FC<INewTopicProps> = ({ setIsNewTopicOpen, idTopicList }) => {
   const [inputValue, setInputValue] = useState('');
 
-  const publicNewTopic = function () {
+  const publicNewTopic = () => {
     const userData = localStorage.getItem('user');
 
     if (!userData) return;
@@ -18,13 +18,15 @@ export const NewTopic: FC<INewTopicProps> = ({ setIsNewTopicOpen, idTopicList })
       forumId: idTopicList,
       name: inputValue,
       yaId: user.id,
-      authorName: user.display_name === null ? user.first_name : user.display_name,
+      authorName: user.display_name ?? user.first_name,
     };
 
     forumApi
       .createNewTopic(responseData)
       .then((res) => console.log(res.data))
       .catch((e) => console.log(e));
+
+    setIsNewTopicOpen(false);
   };
 
   return (
@@ -32,7 +34,7 @@ export const NewTopic: FC<INewTopicProps> = ({ setIsNewTopicOpen, idTopicList })
       <div className="mb-5 text-3xl text-center">Создание нового топика</div>
 
       <input
-        className="w-full h-11 mb-3 indent-1 border border-slate-300 rounded md:w-80"
+        className="w-full h-11 mb-3 indent-1 border border-slate-300 rounded md:w-80 text-black"
         onChange={(e) => setInputValue(e.target.value)}
         placeholder="Опишите вашу проблему"
         type="text"

@@ -38,7 +38,7 @@ export interface ITopicItemProps {
     lastMessageDate: string;
     topicId: string;
   };
-  idTopicList: string | undefined;
+  idTopicList?: string;
 }
 
 export interface IUserData {

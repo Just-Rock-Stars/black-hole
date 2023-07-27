@@ -24,11 +24,7 @@ export const TopicItem: FC<ITopicItemProps> = ({
   return (
     <div className="py-3 px-2 flex font-black cursor-pointer odd:bg-white/20" key={authorId}>
       <div className="hidden md:w-1/12 md:block">
-        <img
-          alt="Author_Icon"
-          className="h-24"
-          src={userData.avatar != null ? userData.avatar : randomAvatarPath}
-        />
+        <img alt="Author_Icon" className="h-24" src={userData.avatar ?? randomAvatarPath} />
       </div>
 
       <div className="w-4/12 flex flex-col justify-between md:w-4/12">
