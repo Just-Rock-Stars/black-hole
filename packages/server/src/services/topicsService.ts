@@ -107,6 +107,7 @@ export class TopicService implements ITopicService {
         {
           model: Reaction,
           attributes: ['Type', 'UserId', 'TopicId'],
+          include: [{ model: User, attributes: ['YaId'] }],
         },
         { model: User, attributes: ['YaId'] },
       ],
@@ -125,7 +126,7 @@ export class TopicService implements ITopicService {
         reactions:
           t.Reactions?.map((x) => ({
             type: x.Type,
-            userId: x.UserId,
+            ownerReactionId: x.User.YaId,
             topicId: x.TopicId,
           })) ?? [],
       };

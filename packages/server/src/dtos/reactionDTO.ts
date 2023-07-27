@@ -1,6 +1,6 @@
 export type TReactionDto = {
   id?: number;
   type: string;
-  userId: number;
+  ownerReactionId: number;
   topicId: number;
 };

@@ -8,5 +8,6 @@ export const reactionRouter = Router();
 
 const controller = new ReactionController(new ReactionService(sequelize));
 
-reactionRouter.post('/', controller.create);
 reactionRouter.get('/', controller.getReactionByTopicId);
+reactionRouter.post('/', controller.create);
+reactionRouter.delete('/', controller.destroyReaction);

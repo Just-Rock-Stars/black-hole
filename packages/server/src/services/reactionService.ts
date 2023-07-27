@@ -12,112 +12,112 @@ export interface IReactionService {
   createReaction(dto: TCreateReactionDto, user?: TUserDto): Promise<TReactionDto>;
 
   getReactionByTopicId(id: number, user?: TUserDto): Promise<TReactionDto[]>;
+
+  destroyReactionByTopicId(id: number, user?: TUserDto): Promise<string>;
 }
 
 export class ReactionService implements IReactionService {
   constructor(private _db: Sequelize) {}
 
-  public async createReaction({ type, userId, topicId }: TCreateReactionDto, user: TUserDto) {
-    console.log(user);
+  public async createReaction({ type, topicId }: TCreateReactionDto, user: TUserDto) {
     if (!user) {
-      throw new NotFountError('Вы не авторизованы!!!');
+      throw new NotFountError("You don't have access, you need to log in");
+    }
+
+    if (!type) {
+      throw new NotFountError("No 'type' field");
+    }
+
+    if (!topicId) {
+      throw new NotFountError("No 'topicId' field");
     }
 
     const topic = await ForumTopic.findByPk(topicId);
-
-    if (!type) {
-      throw new NotFountError('No "type" field');
-    }
 
     if (topic === null) {
       throw new NotFountError("Topic doesn't exist");
     }
 
-    const foundUser = await User.findByPk(userId);
+    let existingAuthor = await User.findOne({
+      where: {
+        YaId: user.id,
+      },
+    });
 
-    if (foundUser === null) {
-      throw new NotFountError("User doesn't exist");
+    if (!existingAuthor) {
+      existingAuthor = await User.create({
+        Comments: [],
+        Name: user.first_name,
+        Replies: [],
+        Topics: [],
+        YaId: user.id,
+        Avatar: user?.avatar ?? null,
+      });
     }
 
-    const creationDate = new Date();
-
-    const reactionDestroy = await Reaction.findOne({
-      where: {
-        Type: type,
-        TopicId: topicId,
-        UserId: userId,
-      },
-    });
-
-    const reactionUpdate = await Reaction.findOne({
-      where: {
-        TopicId: topicId,
-        UserId: userId,
-      },
-    });
-
-    let text: string | null = null;
-
     const result = await this._db.transaction(async (t) => {
-      if (reactionDestroy) {
-        await Reaction.destroy({
-          where: {
-            Type: type,
-            UserId: userId,
-            TopicId: topicId,
-          },
-        });
+      existingAuthor = await User.findOne({
+        where: {
+          YaId: user.id,
+        },
+      });
 
-        text = 'Reaction removed';
-      } else if (reactionUpdate) {
-        await Reaction.update(
+      if (!existingAuthor) {
+        throw new NotFountError("Author doesn't exist");
+      }
+      let reaction = await Reaction.findOne({
+        where: {
+          TopicId: topicId,
+          UserId: existingAuthor.id,
+        },
+      });
+
+      const creationDate = new Date();
+
+      if (reaction) {
+        await reaction.update(
           {
             Type: type,
-            User: foundUser,
-            UserId: userId,
+            User: existingAuthor,
+            UserId: existingAuthor?.id,
             ForumTopic: topic,
             TopicId: topic.id,
             createdAt: creationDate,
-            updatedAt: creationDate,
           },
-          { where: { id: reactionUpdate.id }, transaction: t }
+          { where: { id: reaction.id }, transaction: t }
         );
-
-        text = 'Reaction updated';
+      } else {
+        reaction = await Reaction.create(
+          {
+            Type: type,
+            User: existingAuthor,
+            UserId: existingAuthor.id,
+            ForumTopic: topic,
+            TopicId: topic.id,
+            createdAt: creationDate,
+          },
+          { transaction: t }
+        );
       }
-      return await Reaction.create(
-        {
-          Type: type,
-          User: foundUser,
-          UserId: userId,
-          ForumTopic: topic,
-          TopicId: topic.id,
-          createdAt: creationDate,
-          updatedAt: creationDate,
-        },
-        { transaction: t }
-      );
+
+      return reaction;
     });
 
-    return text
-      ? text
-      : {
-          type: result.Type,
-          userId: result.UserId,
-          topicId: result.TopicId,
-        };
+    return {
+      type: result.Type,
+      ownerReactionId: existingAuthor.YaId,
+      topicId: result.TopicId,
+    };
   }
-  // public async getReactionByTopicId({ user, topicId }: TCreateReactionDto) {
 
   getReactionByTopicId: (topicId: number, user?: TUserDto) => Promise<TReactionDto[]> = async (
     topicId,
     user
   ) => {
-    console.log('user:', user);
-    console.log('topicId:', topicId);
     if (!user) {
-      throw new NotFountError('Вы не авторизованы!!!');
+      throw new NotFountError("You don't have access, you need to log in");
     }
+
     if (!topicId) {
       throw new NotFountError("Params 'topicId' is not set");
     }
@@ -132,13 +132,63 @@ export class ReactionService implements IReactionService {
       where: {
         TopicId: topicId,
       },
+      include: [
+        {
+          model: User,
+          attributes: ['YaId'],
+        },
+      ],
     });
 
-    return reations.map((x) => ({
-      id: x.id,
-      type: x.Type,
-      userId: x.UserId,
-      topicId: x.TopicId,
-    }));
+    return reations.map((x) => {
+      return {
+        id: x.id,
+        type: x.Type,
+        ownerReactionId: x.User.YaId,
+        topicId: x.TopicId,
+      };
+    });
+  };
+
+  destroyReactionByTopicId: (topicId: number, user?: TUserDto) => Promise<string> = async (
+    topicId,
+    user
+  ) => {
+    if (!user) {
+      throw new NotFountError("You don't have access, you need to log in");
+    }
+
+    if (!topicId) {
+      throw new NotFountError("Params 'topicId' is not set");
+    }
+
+    const topic = await ForumTopic.findByPk(topicId);
+
+    if (!topic) {
+      throw new NotFountError("Topic doesn't exist");
+    }
+
+    const existingAuthor = await User.findOne({
+      where: {
+        YaId: user.id,
+      },
+    });
+
+    if (!existingAuthor) {
+      throw new NotFountError("Author doesn't exist");
+    }
+
+    const reaction = await Reaction.destroy({
+      where: {
+        TopicId: topicId,
+        UserId: existingAuthor.id,
+      },
+    });
+
+    if (reaction === 0) {
+      throw new NotFountError("Reaction doesn't exist");
+    }
+
+    return 'Reaction removed';
   };
 }
