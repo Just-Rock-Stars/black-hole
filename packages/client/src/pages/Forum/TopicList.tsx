@@ -12,15 +12,23 @@ export const TopicList: FC = () => {
 
   const [topics, setTopics] = useState<ITopicTypes[]>([]);
   const [isNewTopicOpen, setIsNewTopicOpen] = useState<boolean>(false);
+  const [didUpdate, setDidUpdate] = useState(false);
 
   useEffect(() => {
-    if (idTopicList != undefined) {
-      forumApi
-        .getAllTopics(idTopicList)
-        .then((topicsList) => setTopics(topicsList.data))
-        .catch((e) => console.log(e));
+    if (!idTopicList) {
+      return;
     }
-  }, [idTopicList]);
+
+    forumApi
+      .getAllTopics(idTopicList)
+      .then((topicsList) => {
+        setTopics(topicsList.data),
+          setDidUpdate((prev) => {
+            return !prev;
+          });
+      })
+      .catch((e) => console.log(e));
+  }, [idTopicList, didUpdate]);
 
   return (
     <>
@@ -48,7 +56,7 @@ export const TopicList: FC = () => {
         </nav>
 
         {topics.map((topicData) => {
-          return <TopicItem data={topicData} idTopicList={idTopicList} key={idTopicList} />;
+          return <TopicItem data={topicData} idTopicList={idTopicList} key={topicData.topicId} />;
         })}
       </div>
       {isNewTopicOpen && (

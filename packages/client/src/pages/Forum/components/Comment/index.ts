@@ -1,0 +1,1 @@
+export { CommentInTopic } from './Comment';
