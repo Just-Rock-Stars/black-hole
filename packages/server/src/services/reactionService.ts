@@ -56,12 +56,6 @@ export class ReactionService implements IReactionService {
     }
 
     const result = await this._db.transaction(async (t) => {
-      existingAuthor = await User.findOne({
-        where: {
-          YaId: user.id,
-        },
-      });
-
       if (!existingAuthor) {
         throw new NotFountError("Author doesn't exist");
       }
