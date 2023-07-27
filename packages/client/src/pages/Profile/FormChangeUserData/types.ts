@@ -1,10 +1,5 @@
 import { TUser } from '@app-types/TUser';
 
-export type TFormChangeUserDataProps = {
-  userInfo: TUser;
-  fetchUserInfo: VoidFunction;
-};
-
 export type TFormChangeUserData = {
   first_name: string;
   second_name: string;
