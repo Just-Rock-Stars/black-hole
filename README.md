@@ -1,4 +1,4 @@
-## Black Hole Game
+## Black Hole Game DEMO
 
 ### Как запускать?
 

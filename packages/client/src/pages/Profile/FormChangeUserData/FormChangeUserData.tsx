@@ -1,6 +1,8 @@
 import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { getAuthUserInfo } from '@store/slices/auth/authSlice';
+
 import { FormButton } from '@components/FormButton';
 import { Input } from '@components/Input';
 
@@ -11,23 +13,28 @@ import {
   validatePhone,
 } from '@utils/authFormValidation';
 import { isNetworkError } from '@utils/isNetworkError';
+import { useAppDispatch } from '@utils/useAppDispatch';
+import { useAppSelector } from '@utils/useAppSelector';
 
 import { userApi } from '@src/api/userApi';
 
-import { TFormChangeUserData, TFormChangeUserDataProps } from './types';
+import { TFormChangeUserData } from './types';
 
-export const FormChangeUserData: FC<TFormChangeUserDataProps> = ({ fetchUserInfo, userInfo }) => {
+export const FormChangeUserData: FC = () => {
   const {
     register,
     handleSubmit,
     setError,
     formState: { errors, isSubmitting },
   } = useForm<TFormChangeUserData>({ mode: 'onChange' });
+  const dispatch = useAppDispatch();
+
+  const userInfo = useAppSelector((state) => state.auth.authorizedUser);
 
   const onSubmit = async (value: TFormChangeUserData) => {
     try {
       await userApi.changeUserProfile({ ...value });
-      fetchUserInfo();
+      dispatch(getAuthUserInfo());
     } catch (error) {
       let message = 'Что-то пошло не так. Попробуйте перезагрузить страницу';
 
@@ -42,6 +49,10 @@ export const FormChangeUserData: FC<TFormChangeUserDataProps> = ({ fetchUserInfo
       setError('root', { type: 'server', message });
     }
   };
+
+  if (!userInfo) {
+    return null;
+  }
 
   return (
     <form

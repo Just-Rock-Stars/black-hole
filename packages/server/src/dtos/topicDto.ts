@@ -1,3 +1,5 @@
+import { TReactionDto } from './reactionDTO';
+
 export type TTopicDto = {
   authorId: number;
   topicId: number;
@@ -5,4 +7,5 @@ export type TTopicDto = {
   topicName: string;
   lastMessageDate?: Date | null;
   commentsNumber: number;
+  reactions: TReactionDto[];
 };

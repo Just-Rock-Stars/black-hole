@@ -6,6 +6,7 @@ import { authApi } from '@api/authApi';
 
 import { FormButton } from '@components/FormButton';
 import { Input } from '@components/Input';
+import { YandexAuth } from '@components/Oauth/YandexAuth';
 
 import {
   validateEmail,
@@ -79,61 +80,62 @@ export const SignUp: FC = () => {
       <form
         action="submit"
         className="flex flex-col items-center justify-center gap-y-2 w-full max-w-md"
-          noValidate
-          onSubmit={handleSubmit(onSubmit)}
+        noValidate
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <Input
+          className="text-xs p-0.5 text-xs"
+          label="Имя"
+          validationError={nameError?.message}
+          {...register('first_name', { validate: validateNames })}
+        />
+        <Input
+          className="text-xs p-0.5 text-xs"
+          label="Фамилия"
+          validationError={surnameError?.message}
+          {...register('second_name', { validate: validateNames })}
+        />
+        <Input
+          className="text-xs p-0.5 text-xs"
+          label="Логин"
+          validationError={loginError?.message}
+          {...register('login', { validate: validateLogin })}
+        />
+        <Input
+          className="text-xs p-0.5 text-xs"
+          label="Email"
+          type="email"
+          validationError={emailError?.message}
+          {...register('email', { validate: validateEmail })}
+        />
+        <Input
+          className="text-xs p-0.5 text-xs"
+          label="Пароль"
+          type="password"
+          validationError={passwordError?.message}
+          {...register('password', { validate: validatePassword })}
+        />
+        <Input
+          className="text-xs p-0.5 text-xs"
+          label="Телефон"
+          type="phone"
+          validationError={phoneError?.message}
+          {...register('phone', { validate: validatePhone })}
+        />
+        <FormButton
+          className="w-full px-3 py-2"
+          containerClassName="w-full"
+          disabled={isSubmitting}
+          error={root?.message}
+          type="submit"
         >
-          <Input
-            className="text-xs p-0.5 text-xs"
-            label="Имя"
-            validationError={nameError?.message}
-            {...register('first_name', { validate: validateNames })}
-          />
-          <Input
-            className="text-xs p-0.5 text-xs"
-            label="Фамилия"
-            validationError={surnameError?.message}
-            {...register('second_name', { validate: validateNames })}
-          />
-          <Input
-            className="text-xs p-0.5 text-xs"
-            label="Логин"
-            validationError={loginError?.message}
-            {...register('login', { validate: validateLogin })}
-          />
-          <Input
-            className="text-xs p-0.5 text-xs"
-            label="Email"
-            type="email"
-            validationError={emailError?.message}
-            {...register('email', { validate: validateEmail })}
-          />
-          <Input
-            className="text-xs p-0.5 text-xs"
-            label="Пароль"
-            type="password"
-            validationError={passwordError?.message}
-            {...register('password', { validate: validatePassword })}
-          />
-          <Input
-            className="text-xs p-0.5 text-xs"
-            label="Телефон"
-            type="phone"
-            validationError={phoneError?.message}
-            {...register('phone', { validate: validatePhone })}
-          />
-          <FormButton
-            className="w-full px-3 py-2"
-            containerClassName="w-full"
-            disabled={isSubmitting}
-            error={root?.message}
-            type="submit"
-          >
-            Зарегистрироваться
-          </FormButton>
-          <Link className="btn btn-secondary text-center mt-3 w-full" title="Войти" to="/sign-in">
-            Войти
-          </Link>
-        </form>
+          Зарегистрироваться
+        </FormButton>
+        <Link className="btn btn-secondary text-center mt-3 w-full" title="Войти" to="/sign-in">
+          Войти
+        </Link>
+        <YandexAuth />
+      </form>
     </div>
   );
 };
