@@ -17,7 +17,12 @@ export const Topic: FC = () => {
 
   useEffect(() => {
     if (params.idTopic != undefined) {
-      forumApi.getTopicComments(params.idTopic).then((res) => setCommets(res.data));
+      forumApi.getTopicComments(params.idTopic).then((res) => {
+        setCommets(res.data);
+        setDidUpdate((prev) => {
+          return !prev;
+        });
+      });
     }
   }, [didUpdate, params.idTopic]);
 
