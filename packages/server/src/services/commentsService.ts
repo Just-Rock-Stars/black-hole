@@ -99,7 +99,7 @@ export class CommentsService implements ICommentsServices {
     const topic = await ForumTopic.findByPk(id, {
       include: {
         model: Comment,
-        attributes: ['Text'],
+        attributes: ['Text', 'id'],
         include: [
           { model: User, attributes: ['Name', 'YaId', 'Avatar'] },
           { model: Reply, include: [{ model: User, attributes: ['Name', 'YaId', 'Avatar'] }] },
