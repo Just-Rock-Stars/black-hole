@@ -1,7 +1,10 @@
 import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { getAuthUserInfo } from '@store/slices/auth/authSlice';
+
 import { randomAvatarPath } from '@utils/randomAvatarPath';
+import { useAppDispatch } from '@utils/useAppDispatch';
 
 import { API_BASE_URL } from '@constants';
 
@@ -9,7 +12,8 @@ import { userApi } from '@src/api/userApi';
 
 import { TAvatarProps } from './types';
 
-export const Avatar: FC<TAvatarProps> = ({ avatar, fetchUserInfo }) => {
+export const Avatar: FC<TAvatarProps> = ({ avatar }) => {
+  const dispatch = useAppDispatch();
   const [isVisibleFormAvatar, setIsVisibleFormAvatar] = useState(false);
   const { register, handleSubmit } = useForm<{ picture: FileList }>();
 
@@ -20,7 +24,7 @@ export const Avatar: FC<TAvatarProps> = ({ avatar, fetchUserInfo }) => {
     const fetchServerData = async () => {
       const response = await userApi.changeAvatar(formData);
       if (response.status === 200) {
-        fetchUserInfo();
+        dispatch(getAuthUserInfo());
         handleVisibleFormAvatar();
       }
     };
