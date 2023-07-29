@@ -1,5 +1,5 @@
 import { InferAttributes, InferCreationAttributes } from 'sequelize';
-import { AllowNull, Column, DataType, HasMany, IsUrl, Model, Table } from 'sequelize-typescript';
+import { AllowNull, Column, DataType, HasMany, IsUrl, Model, Table, Unique } from 'sequelize-typescript';
 import { Comment } from './Comment';
 import { ForumTopic } from './ForumTopic';
 import { Reply } from './Reply';
@@ -11,6 +11,7 @@ export class User extends Model<InferAttributes<User>, InferCreationAttributes<U
     declare Name: string
 
     @AllowNull(false)
+    @Unique
     @Column(DataType.INTEGER)
     declare YaId: number
 

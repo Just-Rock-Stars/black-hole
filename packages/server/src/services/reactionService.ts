@@ -1,12 +1,10 @@
-import { Sequelize } from 'sequelize';
-
 import { ForumTopic } from '../Models/ForumTopic';
 import { Reaction } from '../Models/Reaction';
 import { User } from '../Models/User';
 import { TCreateReactionDto } from '../dtos/createReactionDto';
 import { TReactionDto } from '../dtos/reactionDTO';
 import { TUserDto } from '../dtos/userDto';
-import { NotFountError } from '../middlewares/errors';
+import { BadRequest, NotFountError } from '../middlewares/errors';
 
 export interface IReactionService {
   createReaction(dto: TCreateReactionDto, user?: TUserDto): Promise<TReactionDto>;
@@ -17,8 +15,6 @@ export interface IReactionService {
 }
 
 export class ReactionService implements IReactionService {
-  constructor(private _db: Sequelize) {}
-
   public async createReaction({ type, topicId }: TCreateReactionDto, user: TUserDto) {
     if (!user) {
       throw new NotFountError("You don't have access, you need to log in");
@@ -26,6 +22,10 @@ export class ReactionService implements IReactionService {
 
     if (!type) {
       throw new NotFountError("No 'type' field");
+    }
+
+    if (typeof type !== 'string') {
+      throw new BadRequest("Field 'type' must be a string type");
     }
 
     if (!topicId) {
@@ -38,63 +38,35 @@ export class ReactionService implements IReactionService {
       throw new NotFountError("Topic doesn't exist");
     }
 
-    let existingAuthor = await User.findOne({
-      where: {
-        YaId: user.id,
-      },
-    });
+    const avatarUrl = user.avatar
+      ? `https://ya-praktikum.tech/api/v2/resources${user.avatar}`
+      : null;
 
-    if (!existingAuthor) {
-      existingAuthor = await User.create({
+    const [existingAuthor] = await User.findOrCreate({
+      where: { YaId: user.id },
+      defaults: {
         Comments: [],
         Name: user.first_name,
         Replies: [],
         Topics: [],
         YaId: user.id,
-        Avatar: user?.avatar ?? null,
-      });
+        Avatar: avatarUrl,
+      },
+    });
+
+    if (!existingAuthor) {
+      throw new NotFountError("Author doesn't exist");
     }
 
-    const result = await this._db.transaction(async (t) => {
-      if (!existingAuthor) {
-        throw new NotFountError("Author doesn't exist");
-      }
-      let reaction = await Reaction.findOne({
-        where: {
-          TopicId: topicId,
-          UserId: existingAuthor.id,
-        },
-      });
+    const creationDate = new Date();
 
-      const creationDate = new Date();
-
-      if (reaction) {
-        await reaction.update(
-          {
-            Type: type,
-            User: existingAuthor,
-            UserId: existingAuthor?.id,
-            ForumTopic: topic,
-            TopicId: topic.id,
-            createdAt: creationDate,
-          },
-          { where: { id: reaction.id }, transaction: t }
-        );
-      } else {
-        reaction = await Reaction.create(
-          {
-            Type: type,
-            User: existingAuthor,
-            UserId: existingAuthor.id,
-            ForumTopic: topic,
-            TopicId: topic.id,
-            createdAt: creationDate,
-          },
-          { transaction: t }
-        );
-      }
-
-      return reaction;
+    const [result] = await Reaction.upsert({
+      Type: type,
+      User: existingAuthor,
+      UserId: existingAuthor?.id,
+      ForumTopic: topic,
+      TopicId: topic.id,
+      createdAt: creationDate,
     });
 
     return {
