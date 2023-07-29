@@ -1,5 +1,5 @@
 import { InferAttributes, InferCreationAttributes } from 'sequelize';
-import { AllowNull, BelongsTo, Column, DataType, ForeignKey, Model, Table, Unique } from 'sequelize-typescript';
+import { AllowNull, BelongsTo, Column, DataType, ForeignKey,  Model, Table, Unique } from 'sequelize-typescript';
 import { ForumTopic } from './ForumTopic';
 import { User } from './User';
 
@@ -18,7 +18,7 @@ export class Reaction extends Model<InferAttributes<Reaction>, InferCreationAttr
     declare User: User
     
     @ForeignKey(() => User)
-    @Unique
+    @Unique("UserId-TopicId")
     @Column
     declare UserId: number;
     
@@ -26,7 +26,7 @@ export class Reaction extends Model<InferAttributes<Reaction>, InferCreationAttr
     declare ForumTopic: ForumTopic
 
     @ForeignKey(() => ForumTopic)
-    @Unique
+    @Unique("UserId-TopicId")
     @Column
     declare TopicId: number;
 }
