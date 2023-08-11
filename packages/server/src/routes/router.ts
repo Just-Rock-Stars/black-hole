@@ -10,10 +10,10 @@ import { Routes } from './types';
 
 const router = Router();
 
-router.use('/api/' + Routes.Forum, forumRouter);
-router.use('/api/' + Routes.ForumTopics, topicsRouter);
-router.use('/api/' + Routes.Comments, commentsRouter);
-router.use('/api/' + Routes.Replies, repliesRouter);
+router.use('/api/' + Routes.Forum, authMiddleware, forumRouter);
+router.use('/api/' + Routes.ForumTopics, authMiddleware, topicsRouter);
+router.use('/api/' + Routes.Comments, authMiddleware, commentsRouter);
+router.use('/api/' + Routes.Replies, authMiddleware, repliesRouter);
 router.use('/api/' + Routes.Reaction, authMiddleware, reactionRouter);
 
 export default router;
