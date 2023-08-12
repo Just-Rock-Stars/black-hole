@@ -19,9 +19,9 @@ if (rootNode === null) {
   throw new Error();
 }
 
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/serviceworker.js');
-}
+// if ('serviceWorker' in navigator) {
+//   navigator.serviceWorker.register('/serviceworker.js');
+// }
 const initialState = window.initialState;
 const store = createStore({ userService: new UserService(new UserRepository()) }, initialState);
 delete window.initialState;

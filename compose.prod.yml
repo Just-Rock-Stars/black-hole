@@ -1,0 +1,20 @@
+version: '3.9'
+
+services:
+  postgres:
+    container_name: blackhole-database
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+    image: postgres:15.3
+    ports:
+      - '5432:5432'
+
+  server:
+    container_name: blackhole-server
+    depends_on:
+      - postgres
+    image: kiliushin/blackhole-server:1.0.5
+    ports:
+      - '3000:3000'
+      - '24678:24678'
+    restart: on-failure
