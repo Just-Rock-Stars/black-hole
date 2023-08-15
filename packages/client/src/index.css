@@ -24,6 +24,6 @@
   }
 
   .overlay {
-    @apply p-8 rounded-xl bg-black/50 text-white;
+    @apply p-8 rounded-xl bg-white/50 dark:bg-black/50 text-black dark:text-white transition;
   }
 }

@@ -10,6 +10,7 @@ services:
       - '${POSTGRES_PORT}:${POSTGRES_PORT}'
     volumes:
       - ./tmp/pgdata/:/var/lib/postgresql/data/
+      - ./create-db.sh:/var/app/create-db.sh
 
   server:
     build:
@@ -21,6 +22,7 @@ services:
     env_file:
       - ./.env
     image: blackhole-server
+    platform: linux/amd64
     ports:
       - '${SERVER_PORT}:${SERVER_PORT}'
       - '24678:24678'
@@ -44,3 +46,21 @@ services:
     restart: on-failure
     volumes:
       - ./pgadmin-data/:/var/lib/pgadmin/
+
+  # nginx:
+  #   container_name: blackhole-nginx
+  #   image: coreycothrum/nginx:v0.1.0
+  #   depends_on:
+  #     - certbot
+  #   environment:
+  #     DOMAIN_NAME: ${DOMAIN_NAME}
+  #   ports:
+  #     - '80:80'
+  #     - '443:443'
+  #   restart: always
+  #   volumes:
+  #     - CERTBOT_CERTS:/etc/letsencrypt:ro
+  #     - CERTBOT_WEBROOT:/var/www/certbot:ro
+  #     - ./nginx.conf:/etc/nginx/templates/default.locations.template
+  #   networks:
+  #     - snake

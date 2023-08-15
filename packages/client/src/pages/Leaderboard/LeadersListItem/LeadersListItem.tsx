@@ -21,7 +21,7 @@ export const LeadersListItem: FC<ILeadersListItem> = ({
           src={userAvatar != null ? `${API_BASE_URL}/resources${userAvatar}` : randomAvatarPath}
         />
 
-        <p className="ml-2 w-5/12 text-sm font-medium text-blue-200">
+        <p className="ml-2 w-5/12 text-sm font-medium text-blue-500">
           {userDisplayName} id:{userID}
         </p>
       </div>

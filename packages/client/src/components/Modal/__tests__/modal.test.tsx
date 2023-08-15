@@ -1,15 +1,25 @@
+import { configureStore } from '@reduxjs/toolkit';
 import { fireEvent, render, screen } from '@testing-library/react';
+import { Provider } from 'react-redux';
+
+import { rootReducer } from '@store/store';
 
 import { Modal } from '../Modal';
 
 const onClose = jest.fn();
 
+const store = configureStore({
+  reducer: rootReducer,
+});
+
 describe('Modal snapshots', () => {
   test('should render modal', () => {
     const tree = render(
-      <Modal isOpen={true} onClose={onClose}>
-        <h1>Modal children</h1>
-      </Modal>
+      <Provider store={store}>
+        <Modal isOpen={true} onClose={onClose}>
+          <h1>Modal children</h1>
+        </Modal>
+      </Provider>
     );
 
     expect(tree).toMatchSnapshot();
@@ -17,9 +27,11 @@ describe('Modal snapshots', () => {
 
   test('should not render modal', () => {
     const tree = render(
-      <Modal isOpen={false} onClose={onClose}>
-        <h1>Modal children</h1>
-      </Modal>
+      <Provider store={store}>
+        <Modal isOpen={false} onClose={onClose}>
+          <h1>Modal children</h1>
+        </Modal>
+      </Provider>
     );
 
     expect(tree).toMatchSnapshot();
@@ -29,9 +41,11 @@ describe('Modal snapshots', () => {
 describe('Modal behavior', () => {
   test('should render title', () => {
     render(
-      <Modal isOpen={true} onClose={onClose} title="Modal title">
-        <h1>Modal children</h1>
-      </Modal>
+      <Provider store={store}>
+        <Modal isOpen={true} onClose={onClose} title="Modal title">
+          <h1>Modal children</h1>
+        </Modal>
+      </Provider>
     );
 
     const title = screen.getByText('Modal title');
@@ -41,9 +55,11 @@ describe('Modal behavior', () => {
 
   test('should click on close button', () => {
     render(
-      <Modal isOpen={true} onClose={onClose}>
-        <h1>Modal children</h1>
-      </Modal>
+      <Provider store={store}>
+        <Modal isOpen={true} onClose={onClose}>
+          <h1>Modal children</h1>
+        </Modal>
+      </Provider>
     );
 
     const closeButton = screen.getByRole('button');

@@ -13,5 +13,6 @@ module.exports = {
     '^@utils/(.*)$': '<rootDir>/src/utils/$1',
     '^@components/(.*)$': '<rootDir>/src/components/$1',
     '\\.(jpg|jpeg|png|gif|webp|svg)$': '<rootDir>/src/__mocks__/fileMocks.ts',
+    '^@store/(.*)$': '<rootDir>/src/store/$1',
   },
 };
